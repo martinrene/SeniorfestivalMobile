@@ -1,0 +1,7 @@
+{
+  "name": "Seniorfestival",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}

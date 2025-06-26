@@ -1,0 +1,76 @@
+/* For information on how to create your own theme, please see:
+http://ionicframework.com/docs/theming/ */
+
+@font-face {
+  font-family: "amatic";
+  src: url("../assets/fonts/amatic.woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "redhattext";
+  src: url("../assets/fonts/redhattext.woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "opensans";
+  src: url("../assets/fonts/opensans.woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "brico-normal";
+  src: url("../assets/fonts/brico-normal.woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "brico-condensed";
+  src: url("../assets/fonts/brico-condensed.woff2");
+  font-weight: 200;
+  font-style: normal;
+}
+
+:root,
+:root[mode="ios"],
+:root[mode="md"] {
+  --ion-font-family: "brico-normal", sans-serif !important;
+  font-family: "brico-normal", sans-serif !important;
+  font-size: 0.8rem;
+
+  --ion-background: black;
+
+  --ion-item-background: transparent;
+
+  --ion-color: white;
+
+  --sf-primary-color: #ff733c;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0px;
+  margin-bottom: 4px;
+  padding: 0px;
+}
+
+h1 {
+  font-size: 3.6rem;
+  text-align: center;
+  margin-top: 30px;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
