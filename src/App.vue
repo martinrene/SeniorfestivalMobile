@@ -149,7 +149,10 @@ import { IonApp, IonRouterOutlet, IonButton, IonIcon, IonText, IonLabel } from "
 import { heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline } from "ionicons/icons"
 
 import { useDataStore } from "@/stores/data";
+import {useMyEventsStore } from "@/stores/myEvents";
+
 const dataStore = useDataStore();
+const myEventsStore = useMyEventsStore();
 
 const state = reactive({
       isMenuOpen: false,
@@ -158,8 +161,12 @@ const state = reactive({
       isRadioPlaying: false
     });
 
-onMounted(() => {
+onMounted(async () => {
   dataStore.fetchData();
+console.log(myEventsStore);
+  await myEventsStore.initialized;
+  myEventsStore.fetchMyEvents();
+
 });
 
 const isQrScannerActive = computed(() => false);

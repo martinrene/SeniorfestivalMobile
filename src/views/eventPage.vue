@@ -13,8 +13,15 @@
             >
               <ion-icon :icon="chevronBackOutline"></ion-icon>
             </ion-button>
-            <ion-button class="btn-circle">
+            <ion-button
+              v-if="isInMyEvents"
+              class="btn-circle"
+              @click="removeFromMyEvents"
+            >
               <ion-icon :icon="heart"></ion-icon>
+            </ion-button>
+            <ion-button v-else class="btn-circle" @click="addToMyEvents">
+              <ion-icon :icon="heartOutline"></ion-icon>
             </ion-button>
           </div>
         </div>
@@ -35,9 +42,12 @@
 <script setup lang="js">
 import { computed } from "vue";
 import { IonContent, IonPage, IonIcon, IonButton } from "@ionic/vue";
-import { heart, chevronBackOutline } from "ionicons/icons"
-import { useDataStore } from "@/stores/data"
+import { heart, chevronBackOutline, heartOutline } from "ionicons/icons"
+import { useDataStore } from "@/stores/data";
+import { useMyEventsStore } from "@/stores/myEvents";
+
 const dataStore = useDataStore();
+const myEventsStore = useMyEventsStore();
 
 const props = defineProps({
   id: { type: String, required: true },
@@ -45,6 +55,8 @@ const props = defineProps({
 });
 
 const event = computed(() => dataStore.event(props.id));
+
+const isInMyEvents = computed(() => event.value ? myEventsStore.isEventInMyEvents(event.value.rowKey) : false)
 
 const dayString = computed(() => {
     switch (event.value.day) {
@@ -54,6 +66,15 @@ const dayString = computed(() => {
         default: return "";
     }
 });
+
+async function removeFromMyEvents() {
+  await myEventsStore.removeFromMyEvents(props.id);
+}
+
+async function addToMyEvents() {
+  debugger;
+  await myEventsStore.addToMyEvents(props.id);
+}
 </script>
 
 <style lang="css" scoped>
