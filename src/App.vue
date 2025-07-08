@@ -16,7 +16,7 @@
       :class="{ active: state.isBackgroundBlack }"
     >
       <ul :class="{ close: !state.isMenuOpen, pop: state.isMenuOpen }">
-        <li v-if="dataStore.setting('afstemning')">
+        <li v-if="dataStore.settingBoolean('afstemning')">
           <ion-label
             router-link="/vote"
             router-direction="root"
@@ -25,11 +25,11 @@
             <span>
               <ion-icon :icon="thumbsUp"></ion-icon>
             </span>
-            <ion-text> Afstemning </ion-text>
+            <ion-text>Afstemning</ion-text>
           </ion-label>
         </li>
 
-        <li v-if="dataStore.setting('information')">
+        <li v-if="dataStore.settingBoolean('information')">
           <ion-label
             router-link="/texts/info"
             router-direction="root"
@@ -38,11 +38,11 @@
             <span>
               <ion-icon :icon="information"></ion-icon>
             </span>
-            <ion-text> Information </ion-text>
+            <ion-text>Information</ion-text>
           </ion-label>
         </li>
 
-        <li v-if="dataStore.setting('deluxe')">
+        <li v-if="dataStore.settingBoolean('deluxe')">
           <ion-label
             router-link="/texts/deluxe"
             router-direction="root"
@@ -51,11 +51,11 @@
             <span>
               <ion-icon :icon="diamond"></ion-icon>
             </span>
-            <ion-text> Deluxe </ion-text>
+            <ion-text>Deluxe</ion-text>
           </ion-label>
         </li>
 
-        <li v-if="dataStore.setting('queues')">
+        <li v-if="dataStore.settingBoolean('queues')">
           <ion-label
             router-link="/queues"
             router-direction="root"
@@ -68,7 +68,7 @@
           </ion-label>
         </li>
 
-        <li v-if="dataStore.setting('boder')">
+        <li v-if="dataStore.settingBoolean('boder')">
           <ion-label
             router-link="/shops/food"
             router-direction="root"
@@ -77,11 +77,11 @@
             <span>
               <ion-icon :icon="fastFood"></ion-icon>
             </span>
-            <ion-text> Mad og Udvalg </ion-text>
+            <ion-text>Mad og Udvalg</ion-text>
           </ion-label>
         </li>
 
-        <li v-if="dataStore.setting('aktiviteter')">
+        <li v-if="dataStore.settingBoolean('aktiviteter')">
           <ion-label
             router-link="/activities"
             router-direction="root"
@@ -90,11 +90,11 @@
             <span>
               <ion-icon :icon="tennisball"></ion-icon>
             </span>
-            <ion-text> Aktiviteter </ion-text>
+            <ion-text>Aktiviteter</ion-text>
           </ion-label>
         </li>
 
-        <li v-if="dataStore.setting('program')">
+        <li v-if="dataStore.settingBoolean('program')">
           <ion-label
             router-link="/schedule"
             router-direction="root"
@@ -103,11 +103,11 @@
             <span>
               <ion-icon :icon="musicalNotes"></ion-icon>
             </span>
-            <ion-text> Program </ion-text>
+            <ion-text>Program</ion-text>
           </ion-label>
         </li>
 
-        <li v-if="dataStore.setting('mitprogram')">
+        <li v-if="dataStore.settingBoolean('mitprogram')">
           <ion-label
             router-link="/myschedule"
             router-direction="root"
@@ -116,7 +116,7 @@
             <span>
               <ion-icon :icon="heart"></ion-icon>
             </span>
-            <ion-text> Min Seniorfestival </ion-text>
+            <ion-text>Min Seniorfestival</ion-text>
           </ion-label>
         </li>
       </ul>
@@ -165,8 +165,6 @@ onMounted(() => {
 const isQrScannerActive = computed(() => false);
 
 function toggleMenu() {
-  dataStore.fetchData();
-
       state.isMenuOpen = !state.isMenuOpen;
       if (!state.isMenuOpen) {
         setTimeout(() => {
@@ -193,7 +191,7 @@ function toggleMenu() {
     });
     state.isRadioPlaying = false;
   } else {
-    myPlayer.src = import.meta.env.VITE_RADIO_URL;
+    myPlayer.src = dataStore.setting("radioUrl");
     myPlayer.load();
     myPlayer.play();
     state.isRadioPlaying = true;

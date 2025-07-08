@@ -52,14 +52,55 @@
 import { IonContent, IonPage, IonList, IonItem } from "@ionic/vue";
 import { computed } from "vue";
 import { useDataStore } from "@/stores/data";
-import scheduleEvent from "@/components/scheduleEvent.vue";
-
+import scheduleEvent from "@/components/event.vue";
 
 const dataStore = useDataStore();
 
-const eventsFriday = computed(() => dataStore.scheduleEvents?.filter(evt => evt.day === "fredag"));
-const eventsSaturday = computed(() => dataStore.scheduleEvents?.filter(evt => evt.day === "lordag"));
-const eventsSunday = computed(() => dataStore.scheduleEvents?.filter(evt => evt.day === "sondag"));
+const props = defineProps({
+  type: { type: String, required: true }
+});
+
+const eventsFriday = computed(() => { switch (props.type) {
+  case "schedule":
+    return dataStore.scheduleEvents?.filter(evt => evt.day === "fredag");
+
+  case "activities":
+    return dataStore.activityEvents?.filter(evt => evt.day === "fredag");
+
+  case "mySchedule":
+    return dataStore.scheduleEvents?.filter(evt => evt.day === "fredag");
+
+    default:
+      return [];
+}});
+
+const eventsSaturday = computed(() => { switch (props.type) {
+  case "schedule":
+    return dataStore.scheduleEvents?.filter(evt => evt.day === "lordag");
+
+  case "activities":
+    return dataStore.activityEvents?.filter(evt => evt.day === "lordag");
+
+  case "mySchedule":
+    return dataStore.scheduleEvents?.filter(evt => evt.day === "lordag");
+
+    default:
+      return [];
+}});
+
+const eventsSunday = computed(() => { switch (props.type) {
+  case "schedule":
+    return dataStore.scheduleEvents?.filter(evt => evt.day === "sondag");
+
+  case "activities":
+    return dataStore.activityEvents?.filter(evt => evt.day === "sondag");
+
+  case "mySchedule":
+    return dataStore.scheduleEvents?.filter(evt => evt.day === "sondag");
+
+    default:
+      return [];
+}});
 </script>
 
 <style lang="css" scoped>

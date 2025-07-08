@@ -40,7 +40,8 @@ import { useDataStore } from "@/stores/data"
 const dataStore = useDataStore();
 
 const props = defineProps({
-  id: { type: String, required: true }
+  id: { type: String, required: true },
+  type: { type: String, required: true }
 });
 
 const event = computed(() => dataStore.event(props.id));

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-const dataUrl = import.meta.env.VITE_API_URL;
+const dataUrl = import.meta.env.VITE_DATA_API_URL;
 
 export const useDataStore = defineStore("data", {
   state: () => ({
@@ -38,8 +38,10 @@ export const useDataStore = defineStore("data", {
         state.data?.texts.find((t) => t.rowKey === key)?.description;
     },
     setting: (state) => {
-      return (key) =>
-        state.data?.settings.find((t) => t.rowKey === key)?.active;
+      return (key) => state.data?.settings.find((t) => t.name === key);
+    },
+    settingBoolean: (state) => {
+      return (key) => state.setting(key)?.value === "true";
     },
   },
 });
