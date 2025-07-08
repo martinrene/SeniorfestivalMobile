@@ -7,7 +7,7 @@
           <ion-item
             v-for="event in eventsFriday"
             :key="event.id"
-            :router-link="`/schedule/${event.rowKey}`"
+            :router-link="`/${props.type}/${event.rowKey}`"
             routerDirection="forward"
             mode="ios"
             tappable
@@ -21,7 +21,7 @@
           <ion-item
             v-for="event in eventsSaturday"
             :key="event.id"
-            :router-link="`/schedule/${event.rowKey}`"
+            :router-link="`/${props.type}/${event.rowKey}`"
             routerDirection="forward"
             mode="ios"
             tappable
@@ -35,7 +35,7 @@
           <ion-item
             v-for="event in eventsSunday"
             :key="event.id"
-            :router-link="`/schedule/${event.rowKey}`"
+            :router-link="`/${props.type}/${event.rowKey}`"
             routerDirection="forward"
             mode="ios"
             tappable
@@ -60,7 +60,8 @@ const props = defineProps({
   type: { type: String, required: true }
 });
 
-const eventsFriday = computed(() => { switch (props.type) {
+const eventsFriday = computed(() => {
+  switch (props.type) {
   case "schedule":
     return dataStore.scheduleEvents?.filter(evt => evt.day === "fredag");
 
@@ -68,13 +69,14 @@ const eventsFriday = computed(() => { switch (props.type) {
     return dataStore.activityEvents?.filter(evt => evt.day === "fredag");
 
   case "mySchedule":
-    return dataStore.scheduleEvents?.filter(evt => evt.day === "fredag");
+    return dataStore.myEvents?.filter(evt => evt.day === "fredag");
 
     default:
       return [];
 }});
 
-const eventsSaturday = computed(() => { switch (props.type) {
+const eventsSaturday = computed(() => {
+  switch (props.type) {
   case "schedule":
     return dataStore.scheduleEvents?.filter(evt => evt.day === "lordag");
 
@@ -82,13 +84,14 @@ const eventsSaturday = computed(() => { switch (props.type) {
     return dataStore.activityEvents?.filter(evt => evt.day === "lordag");
 
   case "mySchedule":
-    return dataStore.scheduleEvents?.filter(evt => evt.day === "lordag");
+    return dataStore.myEvents?.filter(evt => evt.day === "lordag");
 
     default:
       return [];
 }});
 
-const eventsSunday = computed(() => { switch (props.type) {
+const eventsSunday = computed(() => {
+  switch (props.type) {
   case "schedule":
     return dataStore.scheduleEvents?.filter(evt => evt.day === "sondag");
 
@@ -96,7 +99,7 @@ const eventsSunday = computed(() => { switch (props.type) {
     return dataStore.activityEvents?.filter(evt => evt.day === "sondag");
 
   case "mySchedule":
-    return dataStore.scheduleEvents?.filter(evt => evt.day === "sondag");
+    return dataStore.myEvents?.filter(evt => evt.day === "sondag");
 
     default:
       return [];

@@ -8,7 +8,7 @@
             <ion-button
               class="btn-circle"
               routerDirection="back"
-              router-link="/schedule"
+              :router-link="backRoutePath"
               tappable
             >
               <ion-icon :icon="chevronBackOutline"></ion-icon>
@@ -55,6 +55,8 @@ const props = defineProps({
 });
 
 const event = computed(() => dataStore.event(props.id));
+
+const backRoutePath = computed(() => `/${props.type}`);
 
 const isInMyEvents = computed(() => event.value ? myEventsStore.isEventInMyEvents(event.value.rowKey) : false)
 

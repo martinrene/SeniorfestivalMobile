@@ -163,10 +163,7 @@ const state = reactive({
 
 onMounted(async () => {
   dataStore.fetchData();
-console.log(myEventsStore);
-  await myEventsStore.initialized;
   myEventsStore.fetchMyEvents();
-
 });
 
 const isQrScannerActive = computed(() => false);

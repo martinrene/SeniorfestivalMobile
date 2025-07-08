@@ -34,20 +34,20 @@ const routes = [
     path: "/activities",
     name: "Activities",
     component: () => import("@/views/eventsPage.vue"),
-    props: { type: "activites" },
+    props: { type: "activities" },
   },
 
   {
     path: "/myschedule/:id",
     name: "MyScheduleEvent",
     component: () => import("@/views/eventPage.vue"),
-    props: (route) => ({ id: route.params.id, type: "myschedule" }),
+    props: (route) => ({ id: route.params.id, type: "mySchedule" }),
   },
   {
     path: "/myschedule",
     name: "MySchedule",
     component: () => import("@/views/eventsPage.vue"),
-    props: { type: "myschedule" },
+    props: { type: "mySchedule" },
   },
 ];
 

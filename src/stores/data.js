@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useMyEventsStore } from "@/stores/myEvents";
 
 const dataUrl = import.meta.env.VITE_DATA_API_URL;
 
@@ -24,11 +25,26 @@ export const useDataStore = defineStore("data", {
   getters: {
     scheduleEvents: (state) => state.data?.scheduleEvents || [],
     activityEvents: (state) => state.data?.activityEvents || [],
+    myEvents: (state) => {
+      const myEventsStore = useMyEventsStore();
+
+      const myEventIds = myEventsStore.myEvents.map((me) => me.rowKey);
+
+      const sevents = state.scheduleEvents.filter((se) =>
+        myEventIds.includes(se.rowKey)
+      );
+
+      const aevents = state.activityEvents.filter((ae) =>
+        myEventIds.includes(ae.rowKey)
+      );
+
+      return sevents.concat(aevents);
+    },
     event: (state) => {
       return (id) => {
-        let evnt = state.data?.scheduleEvents.find((t) => t.rowKey === id);
+        let evnt = state.scheduleEvents.find((t) => t.rowKey === id);
         if (!evnt) {
-          evnt = state.data?.activityEvents.find((t) => t.rowKey === id);
+          evnt = state.activityEvents.find((t) => t.rowKey === id);
         }
         return evnt;
       };
