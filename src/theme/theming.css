@@ -63,3 +63,7 @@ ion-button.btn-circle {
   --padding-top: 5px;
   --padding-bottom: 5px;
 }
+
+ion-button.link {
+  --background: rgba(0, 0, 0, 0);
+}

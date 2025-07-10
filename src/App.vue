@@ -1,15 +1,5 @@
 <template>
   <ion-app>
-    <div v-if="!isQrScannerActive">
-      <audio preload="meta">
-        <source type="application/x-mpegURL" />
-      </audio>
-
-      <ion-button @click="toggleAudio" style="position: absolute; top: 200px"
-        ><span v-if="!state.isRadioPlaying">Start</span
-        ><span v-else>Stop</span></ion-button
-      >
-    </div>
     <div
       v-if="!isQrScannerActive"
       class="app-background"
@@ -123,7 +113,9 @@
     </div>
 
     <div class="wrap">
-      <div class="rect-left"><div class="inner"></div></div>
+      <div class="rect-left">
+        <div class="inner"></div>
+      </div>
       <div class="rect">
         &nbsp;<span class="circle"></span>
         <div class="avatar" @click="toggleMenu">
@@ -139,14 +131,22 @@
       </div>
     </div>
 
+    <router-link :to="{ path: '/', routerDirection: 'root' }">
+      <ion-icon :icon="home" class="homeButton"></ion-icon>
+    </router-link>
+
+    <router-link :to="{ path: '/myschedule', routerDirection: 'root' }">
+      <ion-icon :icon="heart" class="heartButton"></ion-icon>
+    </router-link>
+
     <ion-router-outlet />
   </ion-app>
 </template>
 
 <script setup lang="js">
 import { reactive, onMounted, computed } from "vue";
-import { IonApp, IonRouterOutlet, IonButton, IonIcon, IonText, IonLabel } from "@ionic/vue";
-import { heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline } from "ionicons/icons"
+import { IonApp, IonRouterOutlet, IonIcon, IonText, IonLabel } from "@ionic/vue";
+import { home, heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline } from "ionicons/icons"
 
 import { useDataStore } from "@/stores/data";
 import {useMyEventsStore } from "@/stores/myEvents";
@@ -185,25 +185,25 @@ function toggleMenu() {
         state.isBackgroundBlack = false;
       }, 400);
     }
-
-    function toggleAudio() {
-  var myPlayer = document.getElementsByTagName("audio")[0];
-  if (state.isRadioPlaying) {
-    myPlayer.pause();
-    setTimeout(() => {
-      myPlayer.load();
-    });
-    state.isRadioPlaying = false;
-  } else {
-    myPlayer.src = dataStore.setting("radioUrl");
-    myPlayer.load();
-    myPlayer.play();
-    state.isRadioPlaying = true;
-  }
-}
 </script>
 
 <style lang="css" scoped>
+.homeButton {
+  position: absolute;
+  bottom: 13px;
+  left: calc(25% - 35px);
+  z-index: 50;
+  color: white;
+}
+
+.heartButton {
+  position: absolute;
+  bottom: 13px;
+  right: calc(25% - 35px);
+  z-index: 50;
+  color: white;
+}
+
 /* Bottom menu */
 
 .avatar {
