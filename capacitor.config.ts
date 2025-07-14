@@ -5,6 +5,14 @@ const config: CapacitorConfig = {
   appName: "Seniorfestival",
   webDir: "dist",
 
+  android: {
+    allowMixedContent: true,
+  },
+  server: {
+    androidScheme: "http",
+    cleartext: true,
+  },
+
   plugins: {
     LiveUpdates: {
       appId: "ef2f7813",
