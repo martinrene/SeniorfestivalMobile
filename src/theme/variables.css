@@ -2,27 +2,6 @@
 http://ionicframework.com/docs/theming/ */
 
 @font-face {
-  font-family: "amatic";
-  src: url("../assets/fonts/amatic.woff2");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "redhattext";
-  src: url("../assets/fonts/redhattext.woff2");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "opensans";
-  src: url("../assets/fonts/opensans.woff2");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
   font-family: "brico-normal";
   src: url("../assets/fonts/brico-normal.woff2");
   font-weight: 400;
@@ -44,10 +23,12 @@ http://ionicframework.com/docs/theming/ */
   font-size: 0.8rem;
 
   --ion-background: black;
+  --ion-background-color: black;
 
   --ion-item-background: transparent;
 
   --ion-color: white;
+  --ion-text-color: white;
 
   --sf-primary-color: #ff733c;
 }
