@@ -1,7 +1,10 @@
 import { defineStore } from "pinia";
 import { useMyEventsStore } from "@/stores/myEvents";
+import { Storage } from "@ionic/storage";
 
+const store = new Storage();
 const dataUrl = import.meta.env.VITE_DATA_API_URL;
+const storeKey = "SFdata";
 
 export const useDataStore = defineStore("data", {
   state: () => ({
@@ -10,6 +13,9 @@ export const useDataStore = defineStore("data", {
 
   actions: {
     async fetchData() {
+      await store.create();
+      this.data = await store.get(storeKey);
+
       const response = await fetch(dataUrl);
 
       if (!response.ok) {
@@ -18,6 +24,7 @@ export const useDataStore = defineStore("data", {
 
       response.json().then((result) => {
         this.data = result;
+        store.set(storeKey, result);
       });
     },
   },

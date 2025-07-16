@@ -144,7 +144,7 @@
 </template>
 
 <script setup lang="js">
-import { reactive, onMounted, computed } from "vue";
+import { reactive, onBeforeMount, computed } from "vue";
 import { IonApp, IonRouterOutlet, IonIcon, IonText, IonLabel } from "@ionic/vue";
 import { home, heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline } from "ionicons/icons"
 
@@ -161,7 +161,7 @@ const state = reactive({
       isRadioPlaying: false
     });
 
-onMounted(async () => {
+onBeforeMount(async () => {
   dataStore.fetchData();
   myEventsStore.fetchMyEvents();
 });

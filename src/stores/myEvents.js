@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
 import { Device } from "@capacitor/device";
+import { Storage } from "@ionic/storage";
 
+const store = new Storage();
+const storeKey = "SFmyEvents";
 let deviceId;
 
 export const useMyEventsStore = defineStore("myEvents", {
@@ -10,6 +13,8 @@ export const useMyEventsStore = defineStore("myEvents", {
 
   actions: {
     async fetchMyEvents() {
+      await store.create();
+      this.data = await store.get(storeKey);
       const response = await fetch(await apiUrl());
 
       if (!response.ok) {
@@ -18,6 +23,7 @@ export const useMyEventsStore = defineStore("myEvents", {
 
       response.json().then((result) => {
         this.myEventsState = result;
+        store.set(storeKey, result);
       });
     },
 
@@ -30,6 +36,7 @@ export const useMyEventsStore = defineStore("myEvents", {
       });
       if (response.status === 202) {
         this.myEventsState.push({ rowKey: eventId });
+        setStorage(this.myEventsState);
       }
     },
 
@@ -42,6 +49,7 @@ export const useMyEventsStore = defineStore("myEvents", {
         this.myEventsState = this.myEventsState.filter(
           (e) => e.rowKey !== eventId
         );
+        setStorage(this.myEventsState);
       }
     },
   },
@@ -59,4 +67,9 @@ async function apiUrl() {
     deviceId = (await Device.getId())?.identifier;
   }
   return `${import.meta.env.VITE_MYEVENTS_API_URL}&phoneId=${deviceId}`;
+}
+
+async function setStorage(data) {
+  await store.create();
+  store.set(storeKey, data);
 }
