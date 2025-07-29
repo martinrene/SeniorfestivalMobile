@@ -8,6 +8,12 @@ const config: CapacitorConfig = {
   android: {
     allowMixedContent: true,
   },
+
+  ios: {
+    // ... additional configuration
+    handleApplicationNotifications: false,
+  },
+
   server: {
     androidScheme: "http",
     cleartext: true,
