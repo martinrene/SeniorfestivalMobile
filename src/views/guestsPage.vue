@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content>
       <ion-segment value="default">
         <ion-segment-button value="default" content-id="name">
           <ion-label>Efter navn</ion-label>
@@ -78,5 +78,13 @@ onBeforeMount(() => {
 <style lang="css">
 ion-item span {
   margin-left: 20px;
+}
+
+ion-content::part(scroll) {
+  padding-top: var(--ion-safe-area-top, 0);
+}
+
+ion-segment-view {
+  margin-top: 10px;
 }
 </style>
