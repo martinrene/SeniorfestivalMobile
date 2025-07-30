@@ -149,10 +149,8 @@ import { IonApp, IonRouterOutlet, IonIcon, IonText, IonLabel } from "@ionic/vue"
 import { home, heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline } from "ionicons/icons"
 
 import { useDataStore } from "@/stores/data";
-import {useMyEventsStore } from "@/stores/myEvents";
 
 const dataStore = useDataStore();
-const myEventsStore = useMyEventsStore();
 
 const state = reactive({
       isMenuOpen: false,
@@ -162,8 +160,7 @@ const state = reactive({
     });
 
 onBeforeMount(async () => {
-  dataStore.fetchData();
-  myEventsStore.fetchMyEvents();
+
 });
 
 const isQrScannerActive = computed(() => false);
