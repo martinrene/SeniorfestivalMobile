@@ -46,7 +46,10 @@ const state = reactive({
 });
 
 const isRadioAvailable = computed(() => {
-  return !!dataStore.setting("radioUrl");
+  return (
+    !!dataStore.setting("radioUrl") &&
+    dataStore.setting("radioUrl").value !== ""
+  );
 });
 
 function toggleAudio() {

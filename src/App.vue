@@ -109,6 +109,22 @@
             <ion-text>Min Seniorfestival</ion-text>
           </ion-label>
         </li>
+
+        <li
+          v-if="
+            dataStore.setting('ticketUrl') &&
+            dataStore.setting('ticketUrl') !== ''
+          "
+        >
+          <a :href="dataStore.setting('ticketUrl').value" target="_blank">
+            <ion-label @click="closeMenu">
+              <span>
+                <ion-icon :icon="ticket"></ion-icon>
+              </span>
+              <ion-text>Køb din billet</ion-text>
+            </ion-label>
+          </a>
+        </li>
       </ul>
     </div>
 
@@ -146,7 +162,7 @@
 <script setup lang="js">
 import { reactive, onBeforeMount, computed } from "vue";
 import { IonApp, IonRouterOutlet, IonIcon, IonText, IonLabel } from "@ionic/vue";
-import { home, heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline } from "ionicons/icons"
+import { home, heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline, ticket } from "ionicons/icons"
 
 import { useDataStore } from "@/stores/data";
 
@@ -486,7 +502,7 @@ ion-text {
 }
 
 .pop li:nth-child(1) {
-  left: 0px;
+  left: -10px;
   bottom: 80px;
   transition-duration: 0.5s;
 }
