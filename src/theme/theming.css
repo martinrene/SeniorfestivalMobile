@@ -67,3 +67,15 @@ ion-button.btn-circle {
 ion-button.link {
   --background: rgba(0, 0, 0, 0);
 }
+
+ion-item-group {
+  margin-bottom: 30px;
+}
+
+ion-item-divider {
+  background: var(--sf-primary-color);
+}
+
+.text-sm {
+  font-size: 0.7em;
+}

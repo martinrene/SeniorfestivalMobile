@@ -6,6 +6,22 @@
       :class="{ active: state.isBackgroundBlack }"
     >
       <ul :class="{ close: !state.isMenuOpen, pop: state.isMenuOpen }">
+        <li
+          v-if="
+            dataStore.setting('ticketUrl') &&
+            dataStore.setting('ticketUrl') !== ''
+          "
+        >
+          <a :href="dataStore.setting('ticketUrl').value" target="_blank">
+            <ion-label @click="closeMenu">
+              <span>
+                <ion-icon :icon="ticket"></ion-icon>
+              </span>
+              <ion-text>Køb billet</ion-text>
+            </ion-label>
+          </a>
+        </li>
+
         <li v-if="dataStore.settingBoolean('afstemning')">
           <ion-label
             router-link="/vote"
@@ -42,6 +58,19 @@
               <ion-icon :icon="diamond"></ion-icon>
             </span>
             <ion-text>Deluxe</ion-text>
+          </ion-label>
+        </li>
+
+        <li v-if="dataStore.settingBoolean('menuguests')">
+          <ion-label
+            router-link="/guests"
+            router-direction="root"
+            @click="closeMenu"
+          >
+            <span>
+              <ion-icon :icon="happy"></ion-icon>
+            </span>
+            <ion-text>Deltagere</ion-text>
           </ion-label>
         </li>
 
@@ -109,22 +138,6 @@
             <ion-text>Min Seniorfestival</ion-text>
           </ion-label>
         </li>
-
-        <li
-          v-if="
-            dataStore.setting('ticketUrl') &&
-            dataStore.setting('ticketUrl') !== ''
-          "
-        >
-          <a :href="dataStore.setting('ticketUrl').value" target="_blank">
-            <ion-label @click="closeMenu">
-              <span>
-                <ion-icon :icon="ticket"></ion-icon>
-              </span>
-              <ion-text>Køb din billet</ion-text>
-            </ion-label>
-          </a>
-        </li>
       </ul>
     </div>
 
@@ -162,7 +175,7 @@
 <script setup lang="js">
 import { reactive, onBeforeMount, computed } from "vue";
 import { IonApp, IonRouterOutlet, IonIcon, IonText, IonLabel } from "@ionic/vue";
-import { home, heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline, ticket } from "ionicons/icons"
+import { home, heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline, ticket, happy } from "ionicons/icons"
 
 import { useDataStore } from "@/stores/data";
 
@@ -502,7 +515,7 @@ ion-text {
 }
 
 .pop li:nth-child(1) {
-  left: -10px;
+  left: 0px;
   bottom: 80px;
   transition-duration: 0.5s;
 }
