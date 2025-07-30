@@ -75,7 +75,6 @@ async function oneSignalInit() {
       "foregroundWillDisplay",
       handleNotificationEvent
     );
-    OneSignal.Notifications.requestPermission(function () {});
   } catch (e) {
     console.log("SF OneSignalInit: " + e);
   }
