@@ -1,8 +1,21 @@
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
-      <div class="pageContainer">
-        <h1>Fredag</h1>
+    <ion-segment :value="dayOfWeek">
+      <ion-segment-button value="fredag" content-id="fredag">
+        <ion-label>Fredag</ion-label>
+      </ion-segment-button>
+
+      <ion-segment-button value="lordag" content-id="lordag">
+        <ion-label>Lørdag</ion-label>
+      </ion-segment-button>
+
+      <ion-segment-button value="sondag" content-id="sondag">
+        <ion-label>Søndag</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-segment-view>
+      <ion-segment-content id="fredag">
         <ion-list lines="none">
           <ion-item
             v-for="event in eventsFriday"
@@ -15,8 +28,9 @@
             <schedule-event :event="event" />
           </ion-item>
         </ion-list>
+      </ion-segment-content>
 
-        <h1>Lørdag</h1>
+      <ion-segment-content id="lordag">
         <ion-list lines="none">
           <ion-item
             v-for="event in eventsSaturday"
@@ -29,8 +43,9 @@
             <schedule-event :event="event" />
           </ion-item>
         </ion-list>
+      </ion-segment-content>
 
-        <h1>Søndag</h1>
+      <ion-segment-content id="sondag">
         <ion-list lines="none">
           <ion-item
             v-for="event in eventsSunday"
@@ -43,13 +58,13 @@
             <schedule-event :event="event" />
           </ion-item>
         </ion-list>
-      </div>
-    </ion-content>
+      </ion-segment-content>
+    </ion-segment-view>
   </ion-page>
 </template>
 
 <script setup lang="js">
-import { IonContent, IonPage, IonList, IonItem } from "@ionic/vue";
+import { IonPage, IonList, IonItem, IonSegment, IonSegmentView, IonSegmentContent, IonSegmentButton, IonLabel } from "@ionic/vue";
 import { computed } from "vue";
 import { useDataStore } from "@/stores/data";
 import scheduleEvent from "@/components/event.vue";
@@ -58,6 +73,19 @@ const dataStore = useDataStore();
 
 const props = defineProps({
   type: { type: String, required: true }
+});
+
+const dayOfWeek = computed(() => {
+const today = new Date();
+today.setHours(today.getHours()-3);
+switch(today.getDay()) {
+  case 6:
+    return "lordag";
+  case 0:
+    return "sondag";
+  default:
+    return "fredag";
+}
 });
 
 const eventsFriday = computed(() => {
@@ -109,5 +137,9 @@ const eventsSunday = computed(() => {
 <style lang="css" scoped>
 a {
   color: var(--ion-color);
+}
+
+ion-content::part(scroll) {
+  padding-top: var(--ion-safe-area-top, 0);
 }
 </style>

@@ -82,6 +82,14 @@ ion-segment-button::part(indicator-background) {
   background: var(--sf-primary-color);
 }
 
+ion-segment-view {
+  margin-top: 10px;
+}
+
+ion-list {
+  margin-bottom: 100px;
+}
+
 .text-sm {
   font-size: 0.7em;
 }
