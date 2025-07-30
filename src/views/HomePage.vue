@@ -1,7 +1,23 @@
 <template>
   <ion-page>
+    <div v-if="state.showRemainingTimeToOpen" class="remainCounter">
+      <div>
+        <h2 style="margin-bottom: 10px">Vi vælter hegnet om</h2>
+        <h2>
+          {{ state.remainDays }} <span>dage</span> {{ state.remainHours }}
+          <span>timer</span> {{ state.remainMinutes }} <span>minutter</span>
+          {{ state.remainSeconds }}
+          <span>sekunder</span>
+        </h2>
+      </div>
+    </div>
+
     <div class="imagecontainer">
       <div class="imageelement"></div>
+    </div>
+
+    <div class="contentContainer">
+      <div v-html="dataStore.setting('frontpageText').value"></div>
     </div>
 
     <div v-if="isRadioAvailable">
@@ -32,18 +48,67 @@
 </template>
 
 <script setup>
-import { reactive, computed } from "vue";
+import { reactive, computed, onMounted, onUnmounted } from "vue";
 import { IonPage } from "@ionic/vue";
 import { useDataStore } from "@/stores/data";
 
 const dataStore = useDataStore();
+let intervaller;
 
 const state = reactive({
   isRadioPlaying: false,
   isSpinningUp: false,
   isSpinning: false,
   isSpinningDown: false,
+
+  remainDays: null,
+  remainHours: null,
+  remainMinutes: null,
+  remainSeconds: null,
+  showRemainingTimeToOpen: false,
 });
+
+onMounted(() => {
+  startCalculatingRemainingTime();
+});
+
+onUnmounted(() => {
+  stopCalculatingRemainingTime();
+});
+
+function startCalculatingRemainingTime() {
+  intervaller = setInterval(() => {
+    calculateRemainingTime();
+  }, 1000);
+}
+
+function stopCalculatingRemainingTime() {
+  clearInterval(intervaller);
+}
+
+function calculateRemainingTime() {
+  try {
+    const now = new Date();
+    const startDate = new Date(
+      dataStore.setting("FestivalStartDateTimeUTC").value
+    );
+    const endDate = new Date(dataStore.setting("FestivalEndDateTimeUTC").value);
+
+    if (now > startDate && now < endDate) {
+      state.showRemainingTimeToOpen = false;
+      return;
+    }
+    const difference = Math.abs(startDate - now);
+
+    state.remainDays = Math.floor(difference / (1000 * 3600 * 24));
+    state.remainHours = Math.floor(difference / (1000 * 3600)) % 24;
+    state.remainMinutes = Math.floor(difference / (1000 * 60)) % 60;
+    state.remainSeconds = Math.floor(difference / 1000) % 60;
+    state.showRemainingTimeToOpen = true;
+  } catch {
+    state.showRemainingTimeToOpen = false;
+  }
+}
 
 const isRadioAvailable = computed(() => {
   return (
@@ -128,6 +193,7 @@ function stopSpinning() {
   z-index: 50;
   width: 200px;
   transform: rotate(10deg);
+  opacity: 0.9;
 }
 
 .spinup {
@@ -235,5 +301,39 @@ function stopSpinning() {
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
   }
+}
+
+.remainCounter {
+  text-align: center;
+  z-index: 10;
+  margin-top: 30px;
+  color: var(--sf-primary-color);
+  position: absolute;
+  width: 100%;
+}
+
+.remainCounter h2 {
+  color: var(--sf-primary-color);
+}
+
+.remainCounter h2 span {
+  font-size: 0.7rem;
+}
+
+.contentContainer {
+  width: 100%;
+  position: absolute;
+  top: 340px;
+  height: calc(100% - 455px);
+  padding-left: 40px;
+  padding-right: 40px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contentContainer div {
+  text-align: center;
 }
 </style>
