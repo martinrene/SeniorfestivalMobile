@@ -78,6 +78,10 @@ ion-item-divider {
   font-size: 1.5rem;
 }
 
+ion-segment {
+  margin-top: var(--ion-safe-area-top, 0);
+}
+
 ion-segment-button::part(indicator-background) {
   background: var(--sf-primary-color);
 }

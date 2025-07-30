@@ -16,9 +16,11 @@
       <div class="imageelement"></div>
     </div>
 
-    <div class="contentContainer">
-      <div v-html="dataStore.setting('frontpageText').value"></div>
-    </div>
+    <ion-content class="contentContainer">
+      <div v-if="!!dataStore.setting('frontpageText')">
+        <div v-html="dataStore.setting('frontpageText').value"></div>
+      </div>
+    </ion-content>
 
     <div v-if="isRadioAvailable">
       <audio preload="meta">
@@ -49,7 +51,7 @@
 
 <script setup>
 import { reactive, computed, onMounted, onUnmounted } from "vue";
-import { IonPage } from "@ionic/vue";
+import { IonPage, IonContent } from "@ionic/vue";
 import { useDataStore } from "@/stores/data";
 
 const dataStore = useDataStore();
@@ -306,7 +308,7 @@ function stopSpinning() {
 .remainCounter {
   text-align: center;
   z-index: 10;
-  margin-top: 30px;
+  margin-top: calc(var(--ion-safe-area-top, 0) + 30px);
   color: var(--sf-primary-color);
   position: absolute;
   width: 100%;
@@ -325,15 +327,18 @@ function stopSpinning() {
   position: absolute;
   top: 340px;
   height: calc(100% - 455px);
-  padding-left: 40px;
-  padding-right: 40px;
   font-size: 1.2rem;
+}
+
+.contentContainer > div {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
-.contentContainer div {
+.contentContainer > div > div {
   text-align: center;
 }
 </style>
