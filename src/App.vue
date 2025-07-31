@@ -160,13 +160,17 @@
       </div>
     </div>
 
-    <router-link :to="{ path: '/', routerDirection: 'root' }">
-      <ion-icon :icon="home" class="homeButton"></ion-icon>
-    </router-link>
+    <ion-button class="link homeButton" router-link="/" router-direction="root">
+      <ion-icon :icon="home"></ion-icon>
+    </ion-button>
 
-    <router-link :to="{ path: '/myschedule', routerDirection: 'root' }">
-      <ion-icon :icon="heart" class="heartButton"></ion-icon>
-    </router-link>
+    <ion-button
+      class="link heartButton"
+      router-link="/myschedule"
+      router-direction="root"
+    >
+      <ion-icon :icon="heart"></ion-icon>
+    </ion-button>
 
     <ion-router-outlet />
   </ion-app>
@@ -174,7 +178,7 @@
 
 <script setup lang="js">
 import { reactive, onBeforeMount, computed } from "vue";
-import { IonApp, IonRouterOutlet, IonIcon, IonText, IonLabel } from "@ionic/vue";
+import { IonApp, IonRouterOutlet, IonIcon, IonText, IonLabel, IonButton } from "@ionic/vue";
 import { home, heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline, ticket, happy } from "ionicons/icons"
 
 import { useDataStore } from "@/stores/data";
@@ -216,7 +220,7 @@ function toggleMenu() {
 <style lang="css" scoped>
 .homeButton {
   position: absolute;
-  bottom: 13px;
+  bottom: 0px;
   left: calc(25% - 35px);
   z-index: 50;
   color: white;
@@ -224,7 +228,7 @@ function toggleMenu() {
 
 .heartButton {
   position: absolute;
-  bottom: 13px;
+  bottom: 0px;
   right: calc(25% - 35px);
   z-index: 50;
   color: white;
