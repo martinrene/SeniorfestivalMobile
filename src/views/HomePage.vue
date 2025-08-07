@@ -14,6 +14,22 @@
 
     <div class="imagecontainer">
       <div class="imageelement"></div>
+
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+        preload
+        id="sfVideo"
+        class="videoelement"
+      >
+        <source
+          :src="dataStore.setting('videoUrl') || '/video/sfvideobackground.mp4'"
+          type="video/mp4"
+        />
+      </video>
     </div>
 
     <ion-content class="contentContainer">
@@ -175,17 +191,60 @@ function stopSpinning() {
 .imagecontainer {
   mask-image: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 1) 70%,
     transparent 100%
   );
   width: 100%;
-  height: 50%;
+  display: inline-block;
 }
 
 .imageelement {
   background-image: url("/video/sfvideobackground.png");
+}
+
+.videoelement {
   width: 100%;
-  height: 100%;
+}
+
+@media (max-height: 714px) {
+  .imagecontainer {
+    height: 50%;
+    overflow: hidden;
+  }
+}
+
+.remainCounter {
+  text-align: center;
+  z-index: 10;
+  margin-top: calc(var(--ion-safe-area-top, 0) + 30px);
+  color: var(--sf-primary-color);
+  position: absolute;
+  width: 100%;
+}
+
+.remainCounter h2 {
+  color: var(--sf-primary-color);
+}
+
+.remainCounter h2 span {
+  font-size: 0.7rem;
+}
+
+.contentContainer {
+  width: 100%;
+  font-size: 1.2rem;
+}
+
+.contentContainer > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100% - 120px);
+}
+
+.contentContainer > div > div {
+  text-align: center;
 }
 
 .spinner {
@@ -303,42 +362,5 @@ function stopSpinning() {
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
   }
-}
-
-.remainCounter {
-  text-align: center;
-  z-index: 10;
-  margin-top: calc(var(--ion-safe-area-top, 0) + 30px);
-  color: var(--sf-primary-color);
-  position: absolute;
-  width: 100%;
-}
-
-.remainCounter h2 {
-  color: var(--sf-primary-color);
-}
-
-.remainCounter h2 span {
-  font-size: 0.7rem;
-}
-
-.contentContainer {
-  width: 100%;
-  position: absolute;
-  top: 340px;
-  height: calc(100% - 455px);
-  font-size: 1.2rem;
-}
-
-.contentContainer > div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
-
-.contentContainer > div > div {
-  text-align: center;
 }
 </style>
