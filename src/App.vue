@@ -22,7 +22,7 @@
           </a>
         </li>
 
-        <li v-if="dataStore.settingBoolean('afstemning')">
+        <li v-if="dataStore.settingBoolean('menuVoting')">
           <ion-label
             router-link="/vote"
             router-direction="root"
@@ -35,7 +35,7 @@
           </ion-label>
         </li>
 
-        <li v-if="dataStore.settingBoolean('information')">
+        <li v-if="dataStore.settingBoolean('menuInformation')">
           <ion-label
             router-link="/texts/info"
             router-direction="root"
@@ -48,7 +48,7 @@
           </ion-label>
         </li>
 
-        <li v-if="dataStore.settingBoolean('deluxe')">
+        <li v-if="dataStore.settingBoolean('menuDeluxe')">
           <ion-label
             router-link="/texts/deluxe"
             router-direction="root"
@@ -61,7 +61,7 @@
           </ion-label>
         </li>
 
-        <li v-if="dataStore.settingBoolean('menuguests')">
+        <li v-if="dataStore.settingBoolean('menuGuests')">
           <ion-label
             router-link="/guests"
             router-direction="root"
@@ -74,7 +74,7 @@
           </ion-label>
         </li>
 
-        <li v-if="dataStore.settingBoolean('queues')">
+        <li v-if="dataStore.settingBoolean('menuQueues')">
           <ion-label
             router-link="/queues"
             router-direction="root"
@@ -87,9 +87,9 @@
           </ion-label>
         </li>
 
-        <li v-if="dataStore.settingBoolean('boder')">
+        <li v-if="dataStore.settingBoolean('menuShops')">
           <ion-label
-            router-link="/shops/food"
+            router-link="/shops"
             router-direction="root"
             @click="closeMenu"
           >
@@ -100,7 +100,7 @@
           </ion-label>
         </li>
 
-        <li v-if="dataStore.settingBoolean('aktiviteter')">
+        <li v-if="dataStore.settingBoolean('menuActivites')">
           <ion-label
             router-link="/activities"
             router-direction="root"
@@ -113,7 +113,7 @@
           </ion-label>
         </li>
 
-        <li v-if="dataStore.settingBoolean('program')">
+        <li v-if="dataStore.settingBoolean('menuSchedule')">
           <ion-label
             router-link="/schedule"
             router-direction="root"
@@ -126,7 +126,7 @@
           </ion-label>
         </li>
 
-        <li v-if="dataStore.settingBoolean('mitprogram')">
+        <li v-if="dataStore.settingBoolean('menuMySchedule')">
           <ion-label
             router-link="/myschedule"
             router-direction="root"

@@ -64,7 +64,9 @@ ion-button.btn-circle {
   --padding-bottom: 5px;
 }
 
-ion-button.link {
+ion-button.link,
+ion-button.link:focus,
+ion-button.link:hover {
   --background: rgba(0, 0, 0, 0);
 }
 
