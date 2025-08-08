@@ -2,7 +2,7 @@
   <ion-page>
     <div v-if="state.showRemainingTimeToOpen" class="remainCounter">
       <div>
-        <h2 style="margin-bottom: 10px">Vi vælter hegnet om</h2>
+        <div>Vi vælter hegnet om</div>
         <h2>
           {{ state.remainDays }} <span>dage</span> {{ state.remainHours }}
           <span>timer</span> {{ state.remainMinutes }} <span>minutter</span>
@@ -26,7 +26,7 @@
         class="videoelement"
       >
         <source
-          :src="dataStore.setting('videoUrl') || '/video/sfvideobackground.mp4'"
+          :src="dataStore.setting('videoUrl') || '/video/sfvideobackground.m4v'"
           type="video/mp4"
         />
       </video>
@@ -191,7 +191,9 @@ function stopSpinning() {
 .imagecontainer {
   mask-image: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 1) 70%,
+    transparent 0%,
+    black 30%,
+    black 80%,
     transparent 100%
   );
   width: 100%;
@@ -216,7 +218,7 @@ function stopSpinning() {
 .remainCounter {
   text-align: center;
   z-index: 10;
-  margin-top: calc(var(--ion-safe-area-top, 0) + 30px);
+  margin-top: calc(var(--ion-safe-area-top, 0) + 10px);
   color: var(--sf-primary-color);
   position: absolute;
   width: 100%;
