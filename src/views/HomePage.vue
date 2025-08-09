@@ -25,10 +25,7 @@
         id="sfVideo"
         class="videoelement"
       >
-        <source
-          :src="dataStore.setting('videoUrl') || '/video/sfvideobackground.m4v'"
-          type="video/mp4"
-        />
+        <source src="/video/fdfsf25_loop_app_8aug.mp4" type="video/mp4" />
       </video>
     </div>
 
