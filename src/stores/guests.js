@@ -45,7 +45,13 @@ export const useGuestsStore = defineStore("guests", {
 
       const groupsArray = Object.values(groups);
       groupsArray.forEach((ga) =>
-        ga.guests.sort((a, b) => ("" + a.name).localeCompare(b.name))
+        ga.guests.sort((a, b) => {
+          const nameCompare = ("" + a.name).localeCompare(b.name);
+          if (nameCompare !== 0) {
+            return nameCompare;
+          }
+          return ("" + a.group).localeCompare(b.group);
+        })
       );
 
       groupsArray.sort((a, b) => a.label.localeCompare(b.label));

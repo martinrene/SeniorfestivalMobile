@@ -99,3 +99,8 @@ ion-list {
 .text-sm {
   font-size: 0.7em;
 }
+
+.ion-activatable,
+.ion-activated {
+  --background: transparent;
+}
