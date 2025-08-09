@@ -23,120 +23,156 @@
         </li>
 
         <li v-if="dataStore.settingBoolean('menuVoting')">
-          <ion-label
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/vote"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="thumbsUp"></ion-icon>
-            </span>
-            <ion-text>Afstemning</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="thumbsUp"></ion-icon>
+              </span>
+              <ion-text>Afstemning</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
         <li v-if="dataStore.settingBoolean('menuInformation')">
-          <ion-label
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/texts/info"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="information"></ion-icon>
-            </span>
-            <ion-text>Information</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="information"></ion-icon>
+              </span>
+              <ion-text>Information</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
         <li v-if="dataStore.settingBoolean('menuDeluxe')">
-          <ion-label
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/texts/deluxe"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="diamond"></ion-icon>
-            </span>
-            <ion-text>Deluxe</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="diamond"></ion-icon>
+              </span>
+              <ion-text>Deluxe</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
         <li v-if="dataStore.settingBoolean('menuGuests')">
-          <ion-label
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/guests"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="happy"></ion-icon>
-            </span>
-            <ion-text>Deltagere</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="happy"></ion-icon>
+              </span>
+              <ion-text>Deltagere</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
         <li v-if="dataStore.settingBoolean('menuQueues')">
-          <ion-label
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/queues"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="footstepsOutline"></ion-icon>
-            </span>
-            <ion-text>Tilmelding og kø</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="footstepsOutline"></ion-icon>
+              </span>
+              <ion-text>Tilmelding og kø</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
         <li v-if="dataStore.settingBoolean('menuShops')">
-          <ion-label
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/shops"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="fastFood"></ion-icon>
-            </span>
-            <ion-text>Mad og Udvalg</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="fastFood"></ion-icon>
+              </span>
+              <ion-text>Mad og Udvalg</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
         <li v-if="dataStore.settingBoolean('menuActivites')">
-          <ion-label
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/activities"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="tennisball"></ion-icon>
-            </span>
-            <ion-text>Aktiviteter</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="tennisball"></ion-icon>
+              </span>
+              <ion-text>Aktiviteter</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
         <li v-if="dataStore.settingBoolean('menuSchedule')">
-          <ion-label
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/schedule"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="musicalNotes"></ion-icon>
-            </span>
-            <ion-text>Program</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="musicalNotes"></ion-icon>
+              </span>
+              <ion-text>Program</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
         <li v-if="dataStore.settingBoolean('menuMySchedule')">
-          <ion-label
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/myschedule"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="heart"></ion-icon>
-            </span>
-            <ion-text>Min Seniorfestival</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="heart"></ion-icon>
+              </span>
+              <ion-text>Min Seniorfestival</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
       </ul>
     </div>
@@ -160,14 +196,22 @@
       </div>
     </div>
 
-    <ion-button class="link homeButton" router-link="/" router-direction="root">
+    <ion-button
+      fill="clear"
+      class="link homeButton"
+      router-link="/"
+      router-direction="root"
+      @click="closeMenu"
+    >
       <ion-icon :icon="home"></ion-icon>
     </ion-button>
 
     <ion-button
+      fill="clear"
       class="link heartButton"
       router-link="/myschedule"
       router-direction="root"
+      @click="closeMenu"
     >
       <ion-icon :icon="heart"></ion-icon>
     </ion-button>
@@ -218,20 +262,27 @@ function toggleMenu() {
 </script>
 
 <style lang="css" scoped>
-.homeButton {
+ion-button.link {
+  --color: white;
+  font-size: 2rem;
+}
+
+ion-button.homeButton {
   position: absolute;
   bottom: 0px;
   left: calc(25% - 35px);
   z-index: 50;
   color: white;
+  font-size: 1rem;
 }
 
-.heartButton {
+ion-button.heartButton {
   position: absolute;
   bottom: 0px;
   right: calc(25% - 35px);
   z-index: 50;
   color: white;
+  font-size: 1rem;
 }
 
 /* Bottom menu */
