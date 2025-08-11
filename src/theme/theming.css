@@ -64,6 +64,43 @@ ion-button.btn-circle {
   --padding-bottom: 5px;
 }
 
-ion-button.link {
+ion-button.link,
+ion-button.link:focus,
+ion-button.link:hover {
   --background: rgba(0, 0, 0, 0);
+}
+
+ion-item-group {
+  margin-bottom: 30px;
+}
+
+ion-item-divider {
+  --background: var(--sf-primary-color);
+  --color: white;
+  font-size: 1.5rem;
+}
+
+ion-segment {
+  margin-top: var(--ion-safe-area-top, 0);
+}
+
+ion-segment-button::part(indicator-background) {
+  background: var(--sf-primary-color);
+}
+
+ion-segment-view {
+  margin-top: 10px;
+}
+
+ion-list {
+  margin-bottom: 100px;
+}
+
+.text-sm {
+  font-size: 0.7em;
+}
+
+.ion-activatable,
+.ion-activated {
+  --background: transparent;
 }

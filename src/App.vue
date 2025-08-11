@@ -6,108 +6,173 @@
       :class="{ active: state.isBackgroundBlack }"
     >
       <ul :class="{ close: !state.isMenuOpen, pop: state.isMenuOpen }">
-        <li v-if="dataStore.settingBoolean('afstemning')">
-          <ion-label
+        <li
+          v-if="
+            dataStore.setting('ticketUrl') &&
+            dataStore.setting('ticketUrl') !== ''
+          "
+        >
+          <a :href="dataStore.setting('ticketUrl').value" target="_blank">
+            <ion-label @click="closeMenu">
+              <span>
+                <ion-icon :icon="ticket"></ion-icon>
+              </span>
+              <ion-text>Køb billet</ion-text>
+            </ion-label>
+          </a>
+        </li>
+
+        <li v-if="dataStore.settingBoolean('menuVoting')">
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/vote"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="thumbsUp"></ion-icon>
-            </span>
-            <ion-text>Afstemning</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="thumbsUp"></ion-icon>
+              </span>
+              <ion-text>Afstemning</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
-        <li v-if="dataStore.settingBoolean('information')">
-          <ion-label
+        <li v-if="dataStore.settingBoolean('menuInformation')">
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/texts/info"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="information"></ion-icon>
-            </span>
-            <ion-text>Information</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="information"></ion-icon>
+              </span>
+              <ion-text>Information</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
-        <li v-if="dataStore.settingBoolean('deluxe')">
-          <ion-label
+        <li v-if="dataStore.settingBoolean('menuDeluxe')">
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/texts/deluxe"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="diamond"></ion-icon>
-            </span>
-            <ion-text>Deluxe</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="diamond"></ion-icon>
+              </span>
+              <ion-text>Deluxe</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
-        <li v-if="dataStore.settingBoolean('queues')">
-          <ion-label
+        <li v-if="dataStore.settingBoolean('menuGuests')">
+          <ion-button
+            fill="clear"
+            class="link"
+            router-link="/guests"
+            router-direction="root"
+            @click="closeMenu"
+          >
+            <ion-label>
+              <span>
+                <ion-icon :icon="happy"></ion-icon>
+              </span>
+              <ion-text>Deltagere</ion-text>
+            </ion-label>
+          </ion-button>
+        </li>
+
+        <li v-if="dataStore.settingBoolean('menuQueues')">
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/queues"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="footstepsOutline"></ion-icon>
-            </span>
-            <ion-text>Tilmelding og kø</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="footstepsOutline"></ion-icon>
+              </span>
+              <ion-text>Tilmelding og kø</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
-        <li v-if="dataStore.settingBoolean('boder')">
-          <ion-label
-            router-link="/shops/food"
+        <li v-if="dataStore.settingBoolean('menuShops')">
+          <ion-button
+            fill="clear"
+            class="link"
+            router-link="/shops"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="fastFood"></ion-icon>
-            </span>
-            <ion-text>Mad og Udvalg</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="fastFood"></ion-icon>
+              </span>
+              <ion-text>Mad og Udvalg</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
-        <li v-if="dataStore.settingBoolean('aktiviteter')">
-          <ion-label
+        <li v-if="dataStore.settingBoolean('menuActivites')">
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/activities"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="tennisball"></ion-icon>
-            </span>
-            <ion-text>Aktiviteter</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="tennisball"></ion-icon>
+              </span>
+              <ion-text>Aktiviteter</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
-        <li v-if="dataStore.settingBoolean('program')">
-          <ion-label
+        <li v-if="dataStore.settingBoolean('menuSchedule')">
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/schedule"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="musicalNotes"></ion-icon>
-            </span>
-            <ion-text>Program</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="musicalNotes"></ion-icon>
+              </span>
+              <ion-text>Program</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
 
-        <li v-if="dataStore.settingBoolean('mitprogram')">
-          <ion-label
+        <li v-if="dataStore.settingBoolean('menuMySchedule')">
+          <ion-button
+            fill="clear"
+            class="link"
             router-link="/myschedule"
             router-direction="root"
             @click="closeMenu"
           >
-            <span>
-              <ion-icon :icon="heart"></ion-icon>
-            </span>
-            <ion-text>Min Seniorfestival</ion-text>
-          </ion-label>
+            <ion-label>
+              <span>
+                <ion-icon :icon="heart"></ion-icon>
+              </span>
+              <ion-text>Min Seniorfestival</ion-text>
+            </ion-label>
+          </ion-button>
         </li>
       </ul>
     </div>
@@ -131,13 +196,25 @@
       </div>
     </div>
 
-    <router-link :to="{ path: '/', routerDirection: 'root' }">
-      <ion-icon :icon="home" class="homeButton"></ion-icon>
-    </router-link>
+    <ion-button
+      fill="clear"
+      class="link homeButton"
+      router-link="/"
+      router-direction="root"
+      @click="closeMenu"
+    >
+      <ion-icon :icon="home"></ion-icon>
+    </ion-button>
 
-    <router-link :to="{ path: '/myschedule', routerDirection: 'root' }">
-      <ion-icon :icon="heart" class="heartButton"></ion-icon>
-    </router-link>
+    <ion-button
+      fill="clear"
+      class="link heartButton"
+      router-link="/myschedule"
+      router-direction="root"
+      @click="closeMenu"
+    >
+      <ion-icon :icon="heart"></ion-icon>
+    </ion-button>
 
     <ion-router-outlet />
   </ion-app>
@@ -145,14 +222,12 @@
 
 <script setup lang="js">
 import { reactive, onBeforeMount, computed } from "vue";
-import { IonApp, IonRouterOutlet, IonIcon, IonText, IonLabel } from "@ionic/vue";
-import { home, heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline } from "ionicons/icons"
+import { IonApp, IonRouterOutlet, IonIcon, IonText, IonLabel, IonButton } from "@ionic/vue";
+import { home, heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline, ticket, happy } from "ionicons/icons"
 
 import { useDataStore } from "@/stores/data";
-import {useMyEventsStore } from "@/stores/myEvents";
 
 const dataStore = useDataStore();
-const myEventsStore = useMyEventsStore();
 
 const state = reactive({
       isMenuOpen: false,
@@ -162,8 +237,7 @@ const state = reactive({
     });
 
 onBeforeMount(async () => {
-  dataStore.fetchData();
-  myEventsStore.fetchMyEvents();
+
 });
 
 const isQrScannerActive = computed(() => false);
@@ -188,20 +262,27 @@ function toggleMenu() {
 </script>
 
 <style lang="css" scoped>
-.homeButton {
+ion-button.link {
+  --color: white;
+  font-size: 2rem;
+}
+
+ion-button.homeButton {
   position: absolute;
-  bottom: 13px;
+  bottom: 0px;
   left: calc(25% - 35px);
   z-index: 50;
   color: white;
+  font-size: 1rem;
 }
 
-.heartButton {
+ion-button.heartButton {
   position: absolute;
-  bottom: 13px;
+  bottom: 0px;
   right: calc(25% - 35px);
   z-index: 50;
   color: white;
+  font-size: 1rem;
 }
 
 /* Bottom menu */

@@ -3,10 +3,15 @@ import App from "./App.vue";
 import router from "./router";
 
 import { createPinia } from "pinia";
-
 import { IonicVue } from "@ionic/vue";
 
+import { Capacitor } from "@capacitor/core";
+import * as capacitorApp from "@capacitor/app";
 import OneSignal from "onesignal-cordova-plugin";
+
+import { useAppStore } from "@/stores/app";
+import { useDataStore } from "@/stores/data";
+import { useMyEventsStore } from "@/stores/myEvents";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/vue/css/core.css";
@@ -44,15 +49,80 @@ const pinia = createPinia();
 const app = createApp(App).use(IonicVue).use(router).use(pinia);
 
 router.isReady().then(() => {
-  app.mount("#app");
+  const dataStore = useDataStore();
+  dataStore.fetchData();
 
-  // Enable verbose logging for debugging (remove in production)
-  OneSignal.Debug.setLogLevel(6);
-  // Initialize with your OneSignal App ID
-  OneSignal.initialize("67227112-3773-4d4d-96f3-3540cf972f47");
-  // Use this method to prompt for push notifications.
-  // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
-  OneSignal.Notifications.requestPermission(false).then((accepted) => {
-    console.log("User accepted notifications: " + accepted);
-  });
+  const myEventsStore = useMyEventsStore();
+  myEventsStore.fetchMyEvents();
+
+  if (Capacitor.getPlatform() !== "web") {
+    oneSignalInit();
+    capacitorSubscriptionsInit();
+  }
+
+  app.mount("#app");
 });
+
+async function oneSignalInit() {
+  try {
+    OneSignal.initialize("67227112-3773-4d4d-96f3-3540cf972f47");
+    const appStore = useAppStore();
+    const identifier = await appStore.fetchDeviceId();
+    OneSignal.login(identifier);
+
+    OneSignal.Notifications.addEventListener("click", handleNotificationEvent);
+    OneSignal.Notifications.addEventListener(
+      "foregroundWillDisplay",
+      handleNotificationEvent
+    );
+
+    OneSignal.Notifications.requestPermission(false).then((accepted) => {
+      console.log("User accepted notifications: " + accepted);
+    });
+  } catch (e) {
+    console.log("SF OneSignalInit: " + e);
+  }
+}
+
+function capacitorSubscriptionsInit() {
+  capacitorApp.App.addListener("appStateChange", ({ isActive }) => {
+    const appStore = useAppStore();
+
+    if (isActive) {
+      const dataStore = useDataStore();
+      dataStore.fetchData();
+
+      const myEventsStore = useMyEventsStore();
+      myEventsStore.fetchMyEvents();
+
+      appStore.setAppActive();
+    } else {
+      appStore.setAppPaused();
+    }
+  });
+}
+
+function handleNotificationEvent(evnt) {
+  const additionalData = evnt?.notification?.additionalData;
+
+  if (additionalData) {
+    if (additionalData.vote) {
+      router.replace("/vote");
+    } else if (additionalData.eventId && additionalData.eventDay) {
+      router.replace(`/myschedule/${additionalData.eventDay}`);
+      router.push(
+        `/myschedule/${additionalData.eventDay}/${additionalData.eventId}/details`
+      );
+    } else if (additionalData.shopId && additionalData.shopType) {
+      router.replace(`/shops/${additionalData.shopType}`);
+      router.push(
+        `/shops/${additionalData.shopType}/${additionalData.shopId}/details`
+      );
+    } else if (additionalData.eventQueueNumber) {
+      router.replace(`/queues`);
+      router.push(`/queues/${additionalData.eventQueueNumber}`);
+    } else if (additionalData.notificationText) {
+      router.replace("/home");
+    }
+  }
+}

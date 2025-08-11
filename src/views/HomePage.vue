@@ -1,8 +1,39 @@
 <template>
   <ion-page>
+    <div v-if="state.showRemainingTimeToOpen" class="remainCounter">
+      <div>
+        <div>Vi vælter hegnet om</div>
+        <h2>
+          {{ state.remainDays }} <span>dage</span> {{ state.remainHours }}
+          <span>timer</span> {{ state.remainMinutes }} <span>minutter</span>
+          {{ state.remainSeconds }}
+          <span>sekunder</span>
+        </h2>
+      </div>
+    </div>
+
     <div class="imagecontainer">
       <div class="imageelement"></div>
+
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+        preload
+        id="sfVideo"
+        class="videoelement"
+      >
+        <source src="/video/fdfsf25_loop_app_8aug.mp4" type="video/mp4" />
+      </video>
     </div>
+
+    <ion-content class="contentContainer">
+      <div v-if="!!dataStore.setting('frontpageText')">
+        <div v-html="dataStore.setting('frontpageText').value"></div>
+      </div>
+    </ion-content>
 
     <div v-if="isRadioAvailable">
       <audio preload="meta">
@@ -32,21 +63,73 @@
 </template>
 
 <script setup>
-import { reactive, computed } from "vue";
-import { IonPage } from "@ionic/vue";
+import { reactive, computed, onMounted, onUnmounted } from "vue";
+import { IonPage, IonContent } from "@ionic/vue";
 import { useDataStore } from "@/stores/data";
 
 const dataStore = useDataStore();
+let intervaller;
 
 const state = reactive({
   isRadioPlaying: false,
   isSpinningUp: false,
   isSpinning: false,
   isSpinningDown: false,
+
+  remainDays: null,
+  remainHours: null,
+  remainMinutes: null,
+  remainSeconds: null,
+  showRemainingTimeToOpen: false,
 });
 
+onMounted(() => {
+  startCalculatingRemainingTime();
+});
+
+onUnmounted(() => {
+  stopCalculatingRemainingTime();
+});
+
+function startCalculatingRemainingTime() {
+  intervaller = setInterval(() => {
+    calculateRemainingTime();
+  }, 1000);
+}
+
+function stopCalculatingRemainingTime() {
+  clearInterval(intervaller);
+}
+
+function calculateRemainingTime() {
+  try {
+    const now = new Date();
+    const startDate = new Date(
+      dataStore.setting("FestivalStartDateTimeUTC").value
+    );
+    const endDate = new Date(dataStore.setting("FestivalEndDateTimeUTC").value);
+
+    if (now > startDate && now < endDate) {
+      state.showRemainingTimeToOpen = false;
+      return;
+    }
+    const difference = Math.abs(startDate - now);
+
+    state.remainDays = Math.floor(difference / (1000 * 3600 * 24));
+    state.remainHours = Math.floor(difference / (1000 * 3600)) % 24;
+    state.remainMinutes = Math.floor(difference / (1000 * 60)) % 60;
+    state.remainSeconds = Math.floor(difference / 1000) % 60;
+    state.showRemainingTimeToOpen = true;
+  } catch {
+    state.showRemainingTimeToOpen = false;
+  }
+}
+
 const isRadioAvailable = computed(() => {
-  return !!dataStore.setting("radioUrl");
+  return (
+    !!dataStore.setting("radioUrl") &&
+    dataStore.setting("radioUrl").value !== ""
+  );
 });
 
 function toggleAudio() {
@@ -105,17 +188,62 @@ function stopSpinning() {
 .imagecontainer {
   mask-image: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 1) 50%,
+    transparent 0%,
+    black 30%,
+    black 80%,
     transparent 100%
   );
   width: 100%;
-  height: 50%;
+  display: inline-block;
 }
 
 .imageelement {
   background-image: url("/video/sfvideobackground.png");
+}
+
+.videoelement {
   width: 100%;
-  height: 100%;
+}
+
+@media (max-height: 714px) {
+  .imagecontainer {
+    height: 50%;
+    overflow: hidden;
+  }
+}
+
+.remainCounter {
+  text-align: center;
+  z-index: 10;
+  margin-top: calc(var(--ion-safe-area-top, 0) + 10px);
+  color: var(--sf-primary-color);
+  position: absolute;
+  width: 100%;
+}
+
+.remainCounter h2 {
+  color: var(--sf-primary-color);
+}
+
+.remainCounter h2 span {
+  font-size: 0.7rem;
+}
+
+.contentContainer {
+  width: 100%;
+  font-size: 1.2rem;
+}
+
+.contentContainer > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100% - 120px);
+}
+
+.contentContainer > div > div {
+  text-align: center;
 }
 
 .spinner {
@@ -125,6 +253,7 @@ function stopSpinning() {
   z-index: 50;
   width: 200px;
   transform: rotate(10deg);
+  opacity: 0.9;
 }
 
 .spinup {
