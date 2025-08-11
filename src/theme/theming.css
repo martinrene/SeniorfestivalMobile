@@ -81,7 +81,7 @@ ion-item-divider {
 }
 
 ion-segment {
-  margin-top: var(--ion-safe-area-top, 0);
+  margin-top: var(--safe-area-inset-top, 0);
 }
 
 ion-segment-button::part(indicator-background) {

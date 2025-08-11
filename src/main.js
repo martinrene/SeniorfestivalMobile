@@ -9,6 +9,8 @@ import { Capacitor } from "@capacitor/core";
 import * as capacitorApp from "@capacitor/app";
 import OneSignal from "onesignal-cordova-plugin";
 
+import { SafeArea } from "capacitor-plugin-safe-area";
+
 import { useAppStore } from "@/stores/app";
 import { useDataStore } from "@/stores/data";
 import { useMyEventsStore } from "@/stores/myEvents";
@@ -61,6 +63,8 @@ router.isReady().then(() => {
   }
 
   app.mount("#app");
+
+  fixSafeArea();
 });
 
 async function oneSignalInit() {
@@ -126,3 +130,41 @@ function handleNotificationEvent(evnt) {
     }
   }
 }
+
+async function fixSafeArea() {
+  SafeArea.getSafeAreaInsets().then((data) => {
+    const { insets } = data;
+    for (const [key, value] of Object.entries(insets)) {
+      console.log("OSTEHAPS", `--safe-area-inset-${key}`, `${value}px`);
+      document.documentElement.style.setProperty(
+        `--safe-area-inset-${key}`,
+        `${value}px`
+      );
+    }
+  });
+}
+/*
+
+  SafeArea.getSafeAreaInsets().then(({ insets }) => {
+    console.log("OSTEHAPS", insets);
+  });
+
+  SafeArea.getStatusBarHeight().then(({ statusBarHeight }) => {
+    console.log(statusBarHeight, "statusbarHeight");
+  });
+
+  await SafeArea.removeAllListeners();
+
+  // when safe-area changed
+  await SafeArea.addListener("safeAreaChanged", (data) => {
+    const { insets } = data;
+    for (const [key, value] of Object.entries(insets)) {
+      console.log("OSTEHAPS", `--safe-area-inset-${key}`, `${value}px`);
+      document.documentElement.style.setProperty(
+        `--safe-area-inset-${key}`,
+        `${value}px`
+      );
+    }
+  });
+}
+*/
