@@ -40,7 +40,7 @@
       </ion-segment-content>
 
       <ion-segment-content id="group">
-        <ion-list lines="none" style="margin-bottom: 70px">
+        <ion-list lines="none">
           <ion-item-group
             v-for="group in guestsStore.groupedByGroup"
             :key="group.label"

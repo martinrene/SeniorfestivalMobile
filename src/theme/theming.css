@@ -104,3 +104,7 @@ ion-list {
 .ion-activated {
   --background: transparent;
 }
+
+ion-list {
+  margin-bottom: 70px;
+}

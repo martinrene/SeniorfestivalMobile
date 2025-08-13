@@ -486,7 +486,7 @@ ion-button.heartButton {
   font-size: 1.8rem;
 }
 
-.pop ion-button ion-label {
+li ion-button ion-label {
   font-size: 1.8rem;
   text-transform: none;
 }
