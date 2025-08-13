@@ -203,6 +203,8 @@ function stopSpinning() {
 
 .videoelement {
   width: 100%;
+  background: transparent url("/video/sfvideobackground.png") no-repeat 0 0;
+  background-size: cover;
 }
 
 @media (max-height: 714px) {
