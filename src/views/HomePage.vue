@@ -215,7 +215,7 @@ function stopSpinning() {
 .remainCounter {
   text-align: center;
   z-index: 10;
-  margin-top: calc(var(--ion-safe-area-top, 0) + 10px);
+  margin-top: calc(var(--safe-area-inset-top, 0) + 10px);
   color: var(--sf-primary-color);
   position: absolute;
   width: 100%;

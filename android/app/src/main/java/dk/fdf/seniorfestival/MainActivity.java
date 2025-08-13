@@ -1,4 +1,4 @@
-package dk.fdf.seniorfestival;
+package dk.fdf.seniorfestival.g2;
 
 import com.getcapacitor.BridgeActivity;
 
