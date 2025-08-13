@@ -483,7 +483,12 @@ ion-button.heartButton {
   position: absolute;
   bottom: 44px;
   left: 50%;
-  font-size: 2em;
+  font-size: 1.8rem;
+}
+
+.pop ion-button ion-label {
+  font-size: 1.8rem;
+  text-transform: none;
 }
 
 li {
@@ -504,8 +509,8 @@ li {
 
 li span {
   background-color: var(--sf-primary-color);
-  height: 50px;
-  width: 50px;
+  height: 45px;
+  width: 45px;
   border-radius: 50%;
   display: flex;
   align-items: center;
