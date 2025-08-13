@@ -67,7 +67,7 @@
 import { IonPage, IonList, IonItem, IonSegment, IonSegmentView, IonSegmentContent, IonSegmentButton, IonLabel } from "@ionic/vue";
 import { computed } from "vue";
 import { useDataStore } from "@/stores/data";
-import scheduleEvent from "@/components/event.vue";
+import scheduleEvent from "@/components/eventItem.vue";
 
 const dataStore = useDataStore();
 

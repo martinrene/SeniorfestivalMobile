@@ -56,8 +56,8 @@ export const useDataStore = defineStore("data", {
         return evnt;
       };
     },
-    shops: (state) => state.data.shops.filter((s) => s.isShop),
-    committees: (state) => state.data.shops.filter((s) => !s.isShop),
+    shops: (state) => state.data?.shops.filter((s) => s.isShop),
+    committees: (state) => state.data?.shops.filter((s) => !s.isShop),
 
     text: (state) => {
       return (key) =>

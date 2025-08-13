@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-segment :value="type">
+    <ion-segment :value="props.type">
       <ion-segment-button value="shop" content-id="shop">
         <ion-label>Boder</ion-label>
       </ion-segment-button>
@@ -12,16 +12,9 @@
 
     <ion-segment-view>
       <ion-segment-content id="shop">
-        <ion-list lines="none">
-          <ion-item
-            v-for="shop in shops"
-            :key="shop.id"
-            :router-link="`/shops/${shop.id}`"
-            routerDirection="forward"
-            mode="ios"
-            tappable
-          >
-            <schedule-event :event="event" />
+        <ion-list lines="inset">
+          <ion-item v-for="shop in shops" :key="shop.id" mode="ios">
+            <shop-item :shop="shop"></shop-item>
           </ion-item>
         </ion-list>
       </ion-segment-content>
@@ -29,14 +22,11 @@
       <ion-segment-content id="committee">
         <ion-list lines="none">
           <ion-item
-            v-for="event in eventsFriday"
-            :key="event.id"
-            :router-link="`/${props.type}/${event.rowKey}`"
-            routerDirection="forward"
+            v-for="committee in committees"
+            :key="committee.id"
             mode="ios"
-            tappable
           >
-            <schedule-event :event="event" />
+            <shop-item :shop="committee"></shop-item>
           </ion-item>
         </ion-list>
       </ion-segment-content>
@@ -48,10 +38,22 @@
 import { IonPage, IonList, IonItem, IonSegment, IonSegmentView, IonSegmentContent, IonSegmentButton, IonLabel } from "@ionic/vue";
 import { computed } from "vue";
 import { useDataStore } from "@/stores/data";
+import shopItem from "@/components/shopItem.vue";
 
 const dataStore = useDataStore();
+
+const props = defineProps({
+  type: { type: String, required: false, default: "shop" }
+});
 
 const shops = computed(() => dataStore.shops);
 
 const committees = computed(() => dataStore.committees);
 </script>
+
+<style scoped>
+ion-item {
+  --inner-padding-end: 0px;
+  --padding-start: 0px;
+}
+</style>
