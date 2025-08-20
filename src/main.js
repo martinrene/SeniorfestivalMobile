@@ -80,9 +80,7 @@ async function oneSignalInit() {
       handleNotificationEvent
     );
 
-    OneSignal.Notifications.requestPermission(false).then((accepted) => {
-      console.log("User accepted notifications: " + accepted);
-    });
+    OneSignal.Notifications.requestPermission(false).then();
   } catch (e) {
     console.log("SF OneSignalInit: " + e);
   }
@@ -135,7 +133,6 @@ async function fixSafeArea() {
   SafeArea.getSafeAreaInsets().then((data) => {
     const { insets } = data;
     for (const [key, value] of Object.entries(insets)) {
-      console.log("OSTEHAPS", `--safe-area-inset-${key}`, `${value}px`);
       document.documentElement.style.setProperty(
         `--safe-area-inset-${key}`,
         `${value}px`
@@ -143,28 +140,3 @@ async function fixSafeArea() {
     }
   });
 }
-/*
-
-  SafeArea.getSafeAreaInsets().then(({ insets }) => {
-    console.log("OSTEHAPS", insets);
-  });
-
-  SafeArea.getStatusBarHeight().then(({ statusBarHeight }) => {
-    console.log(statusBarHeight, "statusbarHeight");
-  });
-
-  await SafeArea.removeAllListeners();
-
-  // when safe-area changed
-  await SafeArea.addListener("safeAreaChanged", (data) => {
-    const { insets } = data;
-    for (const [key, value] of Object.entries(insets)) {
-      console.log("OSTEHAPS", `--safe-area-inset-${key}`, `${value}px`);
-      document.documentElement.style.setProperty(
-        `--safe-area-inset-${key}`,
-        `${value}px`
-      );
-    }
-  });
-}
-*/
