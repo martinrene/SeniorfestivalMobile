@@ -34,6 +34,9 @@ http://ionicframework.com/docs/theming/ */
   --background-checked: var(--sf-primary-color);
 }
 
+:host {
+}
+
 h1,
 h2,
 h3,

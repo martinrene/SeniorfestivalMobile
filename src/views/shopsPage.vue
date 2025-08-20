@@ -20,7 +20,7 @@
       </ion-segment-content>
 
       <ion-segment-content id="committee">
-        <ion-list lines="none">
+        <ion-list lines="inset">
           <ion-item
             v-for="committee in committees"
             :key="committee.id"

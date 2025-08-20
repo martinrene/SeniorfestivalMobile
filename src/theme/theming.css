@@ -47,7 +47,8 @@
   font-size: 10px;
 }
 
-ion-button.btn-circle {
+ion-button.md.btn-circle,
+ion-button.ios.btn-circle {
   --background: rgba(255, 255, 255, 0.8);
   --color: var(--sf-primary-color);
 
@@ -82,10 +83,26 @@ ion-item-divider {
 
 ion-segment {
   margin-top: var(--safe-area-inset-top, 0);
+  --background: black;
 }
 
-ion-segment-button::part(indicator-background) {
-  background: var(--sf-primary-color);
+ion-segment-button {
+  --indicator-color: var(--sf-primary-color);
+}
+
+/* Material Design styles */
+ion-segment-button.md {
+  --color: var(--sf-primary-color);
+
+  --color-checked: var(--sf-primary-color);
+  --indicator-height: 4px;
+}
+
+/* iOS styles */
+ion-segment-button.ios {
+  --color: var(--sf-primary-color);
+  --color-checked: #fff;
+  --background-checked: #000;
 }
 
 ion-segment-view {
@@ -100,11 +117,14 @@ ion-list {
   font-size: 0.7em;
 }
 
-.ion-activatable,
-.ion-activated {
+.ios.ion-activatable,
+.md.ion-activatable,
+.ios.ion-activated,
+.md.ion-activated {
   --background: transparent;
 }
 
-ion-list {
-  margin-bottom: 70px;
+ion-list.list-md,
+ion-list.list-ios {
+  margin-bottom: 100px;
 }
