@@ -20,7 +20,7 @@ http://ionicframework.com/docs/theming/ */
 :root[mode="md"] {
   --ion-font-family: "brico-normal", sans-serif !important;
   font-family: "brico-normal", sans-serif !important;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 
   --ion-background: black;
   --ion-background-color: black;

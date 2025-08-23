@@ -61,6 +61,13 @@ const routes = [
     name: "Shops",
     component: () => import("@/views/shopsPage.vue"),
   },
+
+  {
+    path: "/text/:type",
+    name: "Text",
+    component: () => import("@/views/textPage.vue"),
+    props: true,
+  },
 ];
 
 const router = createRouter({
