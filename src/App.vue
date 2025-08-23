@@ -43,7 +43,7 @@
           <ion-button
             fill="clear"
             class="link"
-            router-link="/texts/info"
+            router-link="/text/info"
             router-direction="root"
             @click="closeMenu"
           >
@@ -60,7 +60,7 @@
           <ion-button
             fill="clear"
             class="link"
-            router-link="/texts/deluxe"
+            router-link="/text/deluxe"
             router-direction="root"
             @click="closeMenu"
           >
@@ -124,7 +124,7 @@
           </ion-button>
         </li>
 
-        <li v-if="dataStore.settingBoolean('menuActivites')">
+        <li v-if="dataStore.settingBoolean('menuActivities')">
           <ion-button
             fill="clear"
             class="link"
