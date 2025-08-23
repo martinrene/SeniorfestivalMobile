@@ -11,7 +11,7 @@
       <h2>
         {{ props.event.title }}
       </h2>
-      <div v-html="props.event.description"></div>
+      <div v-html="props.event.description" class="description-content"></div>
     </div>
   </div>
 </template>

@@ -3,7 +3,11 @@
     <ion-content :fullscreen="true">
       <div v-if="event" class="pageContainer">
         <div class="pictureContainer">
-          <img :src="event.pictureUrl" />
+          <img
+            v-if="event.pictureUrl && event.pictureUrl != ''"
+            :src="event.pictureUrl"
+          />
+          <div v-else class="noPictureContainer"></div>
           <div>
             <ion-button
               class="btn-circle"
@@ -107,5 +111,9 @@ async function addToMyEvents() {
 .tinyLabel {
   margin-top: 16px;
   margin-bottom: 6px;
+}
+
+.noPictureContainer {
+  height: 100px;
 }
 </style>

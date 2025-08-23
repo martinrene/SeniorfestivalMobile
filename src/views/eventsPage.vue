@@ -23,7 +23,8 @@
             :router-link="`/${props.type}/${event.rowKey}`"
             routerDirection="forward"
             mode="ios"
-            tappable
+            detail="false"
+            button
           >
             <schedule-event :event="event" />
           </ion-item>
@@ -38,6 +39,7 @@
             :router-link="`/${props.type}/${event.rowKey}`"
             routerDirection="forward"
             mode="ios"
+            detail="false"
             tappable
           >
             <schedule-event :event="event" />
@@ -53,6 +55,7 @@
             :router-link="`/${props.type}/${event.rowKey}`"
             routerDirection="forward"
             mode="ios"
+            detail="false"
             tappable
           >
             <schedule-event :event="event" />
