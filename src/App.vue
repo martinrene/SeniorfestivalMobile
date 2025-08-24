@@ -39,23 +39,6 @@
           </ion-button>
         </li>
 
-        <li v-if="dataStore.settingBoolean('menuInformation')">
-          <ion-button
-            fill="clear"
-            class="link"
-            router-link="/text/info"
-            router-direction="root"
-            @click="closeMenu"
-          >
-            <ion-label>
-              <span>
-                <ion-icon :icon="information"></ion-icon>
-              </span>
-              <ion-text>Information</ion-text>
-            </ion-label>
-          </ion-button>
-        </li>
-
         <li v-if="dataStore.settingBoolean('menuDeluxe')">
           <ion-button
             fill="clear"
@@ -69,6 +52,23 @@
                 <ion-icon :icon="diamond"></ion-icon>
               </span>
               <ion-text>Deluxe</ion-text>
+            </ion-label>
+          </ion-button>
+        </li>
+
+        <li v-if="dataStore.settingBoolean('menuInformation')">
+          <ion-button
+            fill="clear"
+            class="link"
+            router-link="/text/info"
+            router-direction="root"
+            @click="closeMenu"
+          >
+            <ion-label>
+              <span>
+                <ion-icon :icon="information"></ion-icon>
+              </span>
+              <ion-text>Information</ion-text>
             </ion-label>
           </ion-button>
         </li>
@@ -170,7 +170,7 @@
               <span>
                 <ion-icon :icon="heart"></ion-icon>
               </span>
-              <ion-text>Min Seniorfestival</ion-text>
+              <ion-text>Min festival</ion-text>
             </ion-label>
           </ion-button>
         </li>
@@ -503,7 +503,7 @@ li {
 }
 
 .pop li {
-  width: 300px;
+  width: 360px;
   opacity: 1;
 }
 
@@ -533,50 +533,50 @@ ion-text {
 }
 
 .pop li:nth-child(8) {
-  left: -80px;
-  bottom: 630px;
+  left: -100px;
+  bottom: 500px;
   transition-duration: 0.2s;
 }
 
 .pop li:nth-child(7) {
   left: -150px;
-  bottom: 560px;
+  bottom: 440px;
   transition-duration: 0.2s;
 }
 
 .pop li:nth-child(6) {
   left: -180px;
-  bottom: 480px;
+  bottom: 370px;
   transition-duration: 0.25s;
 }
 
 .pop li:nth-child(5) {
   left: -190px;
-  bottom: 400px;
+  bottom: 300px;
   transition-duration: 0.3s;
 }
 
 .pop li:nth-child(4) {
   left: -170px;
-  bottom: 320px;
+  bottom: 230px;
   transition-duration: 0.35s;
 }
 
 .pop li:nth-child(3) {
-  left: -120px;
-  bottom: 240px;
+  left: -130px;
+  bottom: 170px;
   transition-duration: 0.4s;
 }
 
 .pop li:nth-child(2) {
-  left: -50px;
-  bottom: 160px;
+  left: -70px;
+  bottom: 110px;
   transition-duration: 0.45s;
 }
 
 .pop li:nth-child(1) {
   left: 0px;
-  bottom: 80px;
+  bottom: 70px;
   transition-duration: 0.5s;
 }
 
