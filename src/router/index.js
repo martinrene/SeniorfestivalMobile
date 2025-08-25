@@ -13,10 +13,14 @@ const routes = [
   },
 
   {
-    path: "/schedule/:id",
+    path: "/schedule/:id/:day",
     name: "ScheduleEvent",
     component: () => import("@/views/eventPage.vue"),
-    props: (route) => ({ id: route.params.id, type: "schedule" }),
+    props: (route) => ({
+      id: route.params.id,
+      type: "schedule",
+      day: route.params.day,
+    }),
   },
   {
     path: "/schedule",
@@ -25,10 +29,14 @@ const routes = [
     props: { type: "schedule" },
   },
   {
-    path: "/activities/:id",
+    path: "/activities/:id/:day",
     name: "ActivitiesEvent",
     component: () => import("@/views/eventPage.vue"),
-    props: (route) => ({ id: route.params.id, type: "activities" }),
+    props: (route) => ({
+      id: route.params.id,
+      type: "activities",
+      day: route.params.day,
+    }),
   },
   {
     path: "/activities",
@@ -38,10 +46,14 @@ const routes = [
   },
 
   {
-    path: "/myschedule/:id",
+    path: "/myschedule/:id/:day",
     name: "MyScheduleEvent",
     component: () => import("@/views/eventPage.vue"),
-    props: (route) => ({ id: route.params.id, type: "mySchedule" }),
+    props: (route) => ({
+      id: route.params.id,
+      type: "mySchedule",
+      day: route.params.day,
+    }),
   },
   {
     path: "/myschedule",

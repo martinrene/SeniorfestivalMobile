@@ -1,26 +1,26 @@
 <template>
   <ion-page>
-    <ion-segment :value="dayOfWeek">
-      <ion-segment-button value="fredag" content-id="fredag">
+    <ion-segment :value="dayToShow" @ion-change="onDayChanged">
+      <ion-segment-button value="fredag" :content-id="`fredag${props.type}`">
         <ion-label>Fredag</ion-label>
       </ion-segment-button>
 
-      <ion-segment-button value="lordag" content-id="lordag">
+      <ion-segment-button value="lordag" :content-id="`lordag${props.type}`">
         <ion-label>Lørdag</ion-label>
       </ion-segment-button>
 
-      <ion-segment-button value="sondag" content-id="sondag">
+      <ion-segment-button value="sondag" :content-id="`sondag${props.type}`">
         <ion-label>Søndag</ion-label>
       </ion-segment-button>
     </ion-segment>
 
     <ion-segment-view>
-      <ion-segment-content id="fredag">
+      <ion-segment-content :id="`fredag${props.type}`">
         <ion-list lines="none">
           <ion-item
             v-for="event in eventsFriday"
             :key="event.id"
-            :router-link="`/${props.type}/${event.rowKey}`"
+            :router-link="`/${props.type}/${event.rowKey}/fredag`"
             routerDirection="forward"
             mode="ios"
             detail="false"
@@ -31,12 +31,12 @@
         </ion-list>
       </ion-segment-content>
 
-      <ion-segment-content id="lordag">
+      <ion-segment-content :id="`lordag${props.type}`">
         <ion-list lines="none">
           <ion-item
             v-for="event in eventsSaturday"
             :key="event.id"
-            :router-link="`/${props.type}/${event.rowKey}`"
+            :router-link="`/${props.type}/${event.rowKey}/lordag`"
             routerDirection="forward"
             mode="ios"
             detail="false"
@@ -47,12 +47,12 @@
         </ion-list>
       </ion-segment-content>
 
-      <ion-segment-content id="sondag">
+      <ion-segment-content :id="`sondag${props.type}`">
         <ion-list lines="none">
           <ion-item
             v-for="event in eventsSunday"
             :key="event.id"
-            :router-link="`/${props.type}/${event.rowKey}`"
+            :router-link="`/${props.type}/${event.rowKey}/sondag`"
             routerDirection="forward"
             mode="ios"
             detail="false"
@@ -68,28 +68,43 @@
 
 <script setup lang="js">
 import { IonPage, IonList, IonItem, IonSegment, IonSegmentView, IonSegmentContent, IonSegmentButton, IonLabel } from "@ionic/vue";
-import { computed } from "vue";
+import { computed, reactive } from "vue";
+import { useRoute } from "vue-router";
 import { useDataStore } from "@/stores/data";
 import scheduleEvent from "@/components/eventItem.vue";
 
 const dataStore = useDataStore();
+const route = useRoute();
+
+const state = reactive({ currentSelectedDay: null});
 
 const props = defineProps({
   type: { type: String, required: true }
 });
 
-const dayOfWeek = computed(() => {
-const today = new Date();
-today.setHours(today.getHours()-3);
-switch(today.getDay()) {
-  case 6:
-    return "lordag";
-  case 0:
-    return "sondag";
-  default:
-    return "fredag";
-}
+const dayToShow = computed(() => {
+  if (state.currentSelectedDay) {
+    return state.currentSelectedDay;
+  }
+
+  if (route.query?.day) {
+    return route.query?.day;
+  }
+
+  const today = new Date();
+  today.setHours(today.getHours()-3);
+  switch(today.getDay()) {
+    case 6:
+      return "lordag";
+
+    case 0:
+      return "sondag";
+
+    default:
+      return "fredag";
+  }
 });
+
 
 const eventsFriday = computed(() => {
   switch (props.type) {
@@ -135,6 +150,10 @@ const eventsSunday = computed(() => {
     default:
       return [];
 }});
+
+function onDayChanged(evt) {
+  state.currentSelectedDay = evt.detail.value;
+}
 </script>
 
 <style lang="css" scoped>

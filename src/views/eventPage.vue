@@ -55,12 +55,13 @@ const myEventsStore = useMyEventsStore();
 
 const props = defineProps({
   id: { type: String, required: true },
-  type: { type: String, required: true }
+  type: { type: String, required: true },
+  day: { type: String, required: true}
 });
 
 const event = computed(() => dataStore.event(props.id));
 
-const backRoutePath = computed(() => `/${props.type}`);
+const backRoutePath = computed(() => `/${props.type}?day=${props.day}`);
 
 const isInMyEvents = computed(() => event.value ? myEventsStore.isEventInMyEvents(event.value.rowKey) : false)
 
