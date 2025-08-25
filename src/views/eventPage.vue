@@ -38,6 +38,17 @@
           <h3>{{ dayString }} {{ event.start }}</h3>
           <p v-html="event.description"></p>
         </div>
+
+        <div class="infoContainer">
+          <div v-for="link in links" :key="link.key">
+            <a :href="link.value" target="_blank" class="linkContainer">
+              <ion-icon :icon="linkIcon(link.key)"></ion-icon>
+              <span>{{
+                link.key.toLowerCase() == "web" ? link.value : link.key
+              }}</span>
+            </a>
+          </div>
+        </div>
       </div>
     </ion-content>
   </ion-page>
@@ -46,7 +57,7 @@
 <script setup lang="js">
 import { computed } from "vue";
 import { IonContent, IonPage, IonIcon, IonButton } from "@ionic/vue";
-import { heart, chevronBackOutline, heartOutline } from "ionicons/icons"
+import { heart, chevronBackOutline, heartOutline, logoInstagram, logoFacebook, desktop, musicalNotes } from "ionicons/icons"
 import { useDataStore } from "@/stores/data";
 import { useMyEventsStore } from "@/stores/myEvents";
 
@@ -74,12 +85,45 @@ const dayString = computed(() => {
     }
 });
 
+const links = computed(() => {
+  if (!event.value || !event.value.links || event.value.links === '') {
+    return null;
+  }
+
+  const linkSplit = event.value.links.split('|');
+
+  return linkSplit.map(l => {
+    const splt = l.split("!");
+
+    return { key: splt[0], value: splt[1] };
+  })
+});
+
+
+
 async function removeFromMyEvents() {
   await myEventsStore.removeFromMyEvents(props.id);
 }
 
 async function addToMyEvents() {
   await myEventsStore.addToMyEvents(props.id);
+}
+
+function linkIcon(key) {
+  switch(key.toLowerCase()) {
+    case "instagram":
+      return logoInstagram;
+
+      case "facebook":
+      return logoFacebook;
+
+      case "spotify":
+      return musicalNotes;
+
+    default:
+      return desktop;
+  }
+
 }
 </script>
 
@@ -115,5 +159,18 @@ async function addToMyEvents() {
 
 .noPictureContainer {
   height: 100px;
+}
+
+.linkContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: var(--sf-primary-color);
+  font-size: 1.1rem;
+}
+
+.linkContainer ion-icon {
+  margin-right: 6px;
 }
 </style>
