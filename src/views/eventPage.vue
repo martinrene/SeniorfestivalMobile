@@ -79,7 +79,6 @@ async function removeFromMyEvents() {
 }
 
 async function addToMyEvents() {
-  debugger;
   await myEventsStore.addToMyEvents(props.id);
 }
 </script>
