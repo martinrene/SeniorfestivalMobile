@@ -38,11 +38,6 @@
   border-color: #ff733c;
 }
 
-.pageContainer {
-  margin-top: 30px;
-  margin-bottom: 130px;
-}
-
 .tinyLabel {
   font-size: 10px;
 }
@@ -50,7 +45,14 @@
 ion-button.md.btn-circle,
 ion-button.ios.btn-circle {
   --background: rgba(255, 255, 255, 0.8);
+  --background-hover: var(--sf-primary-color);
+  --background-activated: var(--sf-primary-color);
+  --background-focused: var(--sf-primary-color);
+
   --color: var(--sf-primary-color);
+  --color-hover: white;
+  --color-activated: white;
+  --color-focused: white;
 
   --border-radius: 50%;
   --border-color: #000;

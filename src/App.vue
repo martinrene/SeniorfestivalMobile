@@ -533,50 +533,50 @@ ion-text {
 }
 
 .pop li:nth-child(8) {
-  left: -100px;
-  bottom: 500px;
+  left: -155px;
+  bottom: 459px;
   transition-duration: 0.2s;
 }
 
 .pop li:nth-child(7) {
-  left: -150px;
-  bottom: 440px;
+  left: -185px;
+  bottom: 404px;
   transition-duration: 0.2s;
 }
 
 .pop li:nth-child(6) {
-  left: -180px;
-  bottom: 370px;
+  left: -205px;
+  bottom: 344px;
   transition-duration: 0.25s;
 }
 
 .pop li:nth-child(5) {
-  left: -190px;
-  bottom: 300px;
+  left: -210px;
+  bottom: 284px;
   transition-duration: 0.3s;
 }
 
 .pop li:nth-child(4) {
-  left: -170px;
-  bottom: 230px;
+  left: -200px;
+  bottom: 224px;
   transition-duration: 0.35s;
 }
 
 .pop li:nth-child(3) {
-  left: -130px;
-  bottom: 170px;
+  left: -180px;
+  bottom: 164px;
   transition-duration: 0.4s;
 }
 
 .pop li:nth-child(2) {
-  left: -70px;
-  bottom: 110px;
+  left: -140px;
+  bottom: 104px;
   transition-duration: 0.45s;
 }
 
 .pop li:nth-child(1) {
-  left: 0px;
-  bottom: 70px;
+  left: -60px;
+  bottom: 65px;
   transition-duration: 0.5s;
 }
 

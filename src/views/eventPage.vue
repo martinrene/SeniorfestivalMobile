@@ -173,4 +173,8 @@ function linkIcon(key) {
 .linkContainer ion-icon {
   margin-right: 6px;
 }
+
+.pageContainer {
+  margin-top: calc(var(--safe-area-inset-top, 0) + 30px);
+}
 </style>
