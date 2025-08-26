@@ -16,7 +16,19 @@
 
     <ion-segment-view>
       <ion-segment-content :id="`fredag${props.type}`">
-        <ion-list lines="none">
+        <div
+          v-if="props.type == 'mySchedule' && eventsFriday.length < 1"
+          class="noeventscontainer"
+        >
+          <p>Her kan du lave din egen Seniorfestival.</p>
+          <p>
+            Find de events og aktiviteter, som du SKAL nå på festivalen og klik
+            på <ion-icon :icon="heart"></ion-icon> for at tilføje dem til dit
+            eget program.
+          </p>
+        </div>
+
+        <ion-list v-else lines="none">
           <ion-item
             v-for="event in eventsFriday"
             :key="event.id"
@@ -32,7 +44,19 @@
       </ion-segment-content>
 
       <ion-segment-content :id="`lordag${props.type}`">
-        <ion-list lines="none">
+        <div
+          v-if="props.type == 'mySchedule' && eventsSaturday.length < 1"
+          class="noeventscontainer"
+        >
+          <p>Her kan du lave din egen Seniorfestival.</p>
+          <p>
+            Find de events og aktiviteter, som du SKAL nå på festivalen og klik
+            på <ion-icon :icon="heart"></ion-icon> for at tilføje dem til dit
+            eget program.
+          </p>
+        </div>
+
+        <ion-list v-else lines="none">
           <ion-item
             v-for="event in eventsSaturday"
             :key="event.id"
@@ -48,7 +72,19 @@
       </ion-segment-content>
 
       <ion-segment-content :id="`sondag${props.type}`">
-        <ion-list lines="none">
+        <div
+          v-if="props.type == 'mySchedule' && eventsSunday.length < 1"
+          class="noeventscontainer"
+        >
+          <p>Her kan du lave din egen Seniorfestival.</p>
+          <p>
+            Find de events og aktiviteter, som du SKAL nå på festivalen og klik
+            på <ion-icon :icon="heart"></ion-icon> for at tilføje dem til dit
+            eget program.
+          </p>
+        </div>
+
+        <ion-list v-else lines="none">
           <ion-item
             v-for="event in eventsSunday"
             :key="event.id"
@@ -68,6 +104,7 @@
 
 <script setup lang="js">
 import { IonPage, IonList, IonItem, IonSegment, IonSegmentView, IonSegmentContent, IonSegmentButton, IonLabel } from "@ionic/vue";
+import { heart } from "ionicons/icons"
 import { computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { useDataStore } from "@/stores/data";
@@ -159,6 +196,20 @@ function onDayChanged(evt) {
 <style lang="css" scoped>
 a {
   color: var(--ion-color);
+}
+
+.noeventscontainer {
+  margin-top: 50px;
+  margin-left: 40px;
+  margin-right: 40px;
+  line-height: 1.5;
+}
+
+ion-icon {
+  color: var(--sf-primary-color);
+
+  position: relative;
+  top: 2px;
 }
 
 ion-content::part(scroll) {

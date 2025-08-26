@@ -5,7 +5,7 @@
       <img :src="props.event.pictureUrl" />
     </div>
     <div class="eventTime">
-      {{ props.event.start.replace(/^0+/, "") }}
+      {{ props.event.start.replace(/^0(?=[1-9])/, "") }}
     </div>
     <div class="eventDescription">
       <h2>

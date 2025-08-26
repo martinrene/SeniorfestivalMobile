@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-content class="ion-padding">
-      <div v-html="typeText" class="container"></div>
+      <div v-html="typeText" class="textcontainer"></div>
     </ion-content>
   </ion-page>
 </template>
@@ -22,8 +22,19 @@ const typeText = computed(() => {
 })
 </script>
 
-<style lang="css" scoped>
-.container {
+<style lang="css">
+.textcontainer {
+  margin-top: calc(var(--safe-area-inset-top, 0) + 30px);
+  margin-left: 30px;
+  margin-right: 30px;
   margin-bottom: 110px;
+}
+
+.textcontainer a {
+  color: var(--sf-primary-color);
+}
+
+.textcontainer h2 {
+  margin-top: 40px;
 }
 </style>
