@@ -65,9 +65,11 @@
 <script setup>
 import { reactive, computed, onMounted, onUnmounted } from "vue";
 import { IonPage, IonContent } from "@ionic/vue";
+import { useRoute } from "vue-router";
 import { useDataStore } from "@/stores/data";
 
 const dataStore = useDataStore();
+const route = useRoute();
 let intervaller;
 
 const state = reactive({
@@ -85,6 +87,10 @@ const state = reactive({
 
 onMounted(() => {
   startCalculatingRemainingTime();
+
+  if (isRadioAvailable.value && route.query["startradio"]) {
+    toggleAudio();
+  }
 });
 
 onUnmounted(() => {

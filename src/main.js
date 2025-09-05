@@ -111,9 +111,9 @@ function handleNotificationEvent(evnt) {
     if (additionalData.vote) {
       router.replace("/vote");
     } else if (additionalData.eventId && additionalData.eventDay) {
-      router.replace(`/myschedule/${additionalData.eventDay}`);
+      router.replace(`/myschedule`);
       router.push(
-        `/myschedule/${additionalData.eventDay}/${additionalData.eventId}/details`
+        `/myschedule/${additionalData.eventId}/${additionalData.eventDay}`
       );
     } else if (additionalData.shopId && additionalData.shopType) {
       router.replace(`/shops/${additionalData.shopType}`);
@@ -125,6 +125,8 @@ function handleNotificationEvent(evnt) {
       router.push(`/queues/${additionalData.eventQueueNumber}`);
     } else if (additionalData.notificationText) {
       router.replace("/home");
+    } else if (additionalData.startRadio) {
+      router.replace("/home?start=true");
     }
   }
 }
