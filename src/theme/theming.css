@@ -6,7 +6,7 @@
 .eventPicture {
   padding-left: 15px;
   padding-right: 15px;
-  padding-top: 15px;
+  padding-top: 25px;
   max-height: 80px;
   overflow: hidden;
 
@@ -111,10 +111,6 @@ ion-segment-view {
   margin-top: 10px;
 }
 
-ion-list {
-  margin-bottom: 100px;
-}
-
 .text-sm {
   font-size: 0.7em;
 }
@@ -126,6 +122,7 @@ ion-list {
   --background: transparent;
 }
 
+ion-list,
 ion-list.list-md,
 ion-list.list-ios {
   margin-bottom: 100px;

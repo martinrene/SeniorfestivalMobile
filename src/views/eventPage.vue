@@ -176,5 +176,6 @@ function linkIcon(key) {
 
 .pageContainer {
   margin-top: calc(var(--safe-area-inset-top, 0) + 30px);
+  margin-bottom: 130px;
 }
 </style>

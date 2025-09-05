@@ -103,7 +103,7 @@
 </template>
 
 <script setup lang="js">
-import { IonPage, IonList, IonItem, IonSegment, IonSegmentView, IonSegmentContent, IonSegmentButton, IonLabel } from "@ionic/vue";
+import { IonPage, IonList, IonItem, IonIcon, IonSegment, IonSegmentView, IonSegmentContent, IonSegmentButton, IonLabel } from "@ionic/vue";
 import { heart } from "ionicons/icons"
 import { computed, reactive } from "vue";
 import { useRoute } from "vue-router";
