@@ -65,6 +65,8 @@ ion-button.ios.btn-circle {
 
   --padding-top: 5px;
   --padding-bottom: 5px;
+  height: 45px;
+  width: 45px;
 }
 
 ion-button.link,

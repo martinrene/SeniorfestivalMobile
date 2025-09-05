@@ -23,6 +23,9 @@ export const useDataStore = defineStore("data", {
       }
 
       response.json().then((result) => {
+        result.scheduleEvents = sortEventsOnStartTime(result.scheduleEvents);
+        result.activityEvents = sortEventsOnStartTime(result.activityEvents);
+
         this.data = result;
         store.set(storeKey, result);
       });
@@ -45,7 +48,7 @@ export const useDataStore = defineStore("data", {
         myEventIds.includes(ae.rowKey)
       );
 
-      return sevents.concat(aevents);
+      return sortEventsOnStartTime(sevents.concat(aevents));
     },
     event: (state) => {
       return (id) => {
@@ -71,3 +74,39 @@ export const useDataStore = defineStore("data", {
     },
   },
 });
+
+function sortEventsOnStartTime(events) {
+  const eventsWithStartTime = events.filter((e) => e.start && e.start !== "");
+
+  const eventsSorted = eventsWithStartTime.sort((a, b) => {
+    const splitA = a.start.split(":");
+    const dateA = new Date(
+      2025,
+      1,
+      Number(splitA[0]) < 4 ? 2 : 1,
+      Number(splitA[0]),
+      Number(splitA[1]),
+      0,
+      0
+    );
+
+    const splitB = b.start.split(":");
+    const dateB = new Date(
+      2025,
+      1,
+      Number(splitB[0]) < 4 ? 2 : 1,
+      Number(splitB[0]),
+      Number(splitB[1]),
+      0,
+      0
+    );
+
+    return dateA.valueOf() - dateB.valueOf();
+  });
+
+  const eventsWithoutStartTime = events.filter(
+    (e) => !e.start || e.start == ""
+  );
+
+  return eventsSorted.concat(eventsWithoutStartTime);
+}
