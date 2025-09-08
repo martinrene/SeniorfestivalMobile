@@ -1,5 +1,7 @@
 <template>
   <ion-app>
+    <voting-item />
+
     <div
       v-if="!isQrScannerActive"
       class="app-background"
@@ -215,7 +217,6 @@
     >
       <ion-icon :icon="heart"></ion-icon>
     </ion-button>
-
     <ion-router-outlet />
   </ion-app>
 </template>
@@ -224,6 +225,8 @@
 import { reactive, onBeforeMount, computed } from "vue";
 import { IonApp, IonRouterOutlet, IonIcon, IonText, IonLabel, IonButton } from "@ionic/vue";
 import { home, heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline, ticket, happy } from "ionicons/icons"
+
+import votingItem from "./components/votingItem.vue";
 
 import { useDataStore } from "@/stores/data";
 
@@ -241,6 +244,7 @@ onBeforeMount(async () => {
 });
 
 const isQrScannerActive = computed(() => false);
+
 
 function toggleMenu() {
       state.isMenuOpen = !state.isMenuOpen;

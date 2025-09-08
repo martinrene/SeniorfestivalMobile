@@ -14,6 +14,7 @@ import { SafeArea } from "capacitor-plugin-safe-area";
 import { useAppStore } from "@/stores/app";
 import { useDataStore } from "@/stores/data";
 import { useMyEventsStore } from "@/stores/myEvents";
+import { useVotingsStore } from "@/stores/votings";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/vue/css/core.css";
@@ -57,6 +58,9 @@ router.isReady().then(() => {
   const myEventsStore = useMyEventsStore();
   myEventsStore.fetchMyEvents();
 
+  const votingsStore = useVotingsStore();
+  votingsStore.startVotingsLoading();
+
   if (Capacitor.getPlatform() !== "web") {
     oneSignalInit();
     capacitorSubscriptionsInit();
@@ -97,8 +101,12 @@ function capacitorSubscriptionsInit() {
       const myEventsStore = useMyEventsStore();
       myEventsStore.fetchMyEvents();
 
+      const votingsStore = useVotingsStore();
+      votingsStore.startVotingsLoading();
       appStore.setAppActive();
     } else {
+      const votingsStore = useVotingsStore();
+      votingsStore.stopVotingsLoading();
       appStore.setAppPaused();
     }
   });
