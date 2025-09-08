@@ -22,7 +22,7 @@ const typeText = computed(() => {
 })
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 .textcontainer {
   margin-top: calc(var(--safe-area-inset-top, 0) + 30px);
   margin-left: 30px;

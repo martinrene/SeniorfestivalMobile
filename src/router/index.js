@@ -80,6 +80,12 @@ const routes = [
     component: () => import("@/views/textPage.vue"),
     props: true,
   },
+
+  {
+    path: "/rap",
+    name: "Rap",
+    component: () => import("@/views/rapPage.vue"),
+  },
 ];
 
 const router = createRouter({

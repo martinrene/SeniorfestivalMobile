@@ -1,7 +1,6 @@
 <template>
   <ion-app>
     <voting-item />
-
     <div
       v-if="!isQrScannerActive"
       class="app-background"
@@ -13,6 +12,7 @@
             dataStore.setting('ticketUrl') &&
             dataStore.setting('ticketUrl') !== ''
           "
+          class="ticket-link"
         >
           <a :href="dataStore.setting('ticketUrl').value" target="_blank">
             <ion-label @click="closeMenu">
@@ -22,23 +22,6 @@
               <ion-text>Køb billet</ion-text>
             </ion-label>
           </a>
-        </li>
-
-        <li v-if="dataStore.settingBoolean('menuVoting')">
-          <ion-button
-            fill="clear"
-            class="link"
-            router-link="/vote"
-            router-direction="root"
-            @click="closeMenu"
-          >
-            <ion-label>
-              <span>
-                <ion-icon :icon="thumbsUp"></ion-icon>
-              </span>
-              <ion-text>Afstemning</ion-text>
-            </ion-label>
-          </ion-button>
         </li>
 
         <li v-if="dataStore.settingBoolean('menuDeluxe')">
@@ -71,6 +54,23 @@
                 <ion-icon :icon="information"></ion-icon>
               </span>
               <ion-text>Information</ion-text>
+            </ion-label>
+          </ion-button>
+        </li>
+
+        <li v-if="dataStore.settingBoolean('menuRap')">
+          <ion-button
+            fill="clear"
+            class="link"
+            router-link="/rap"
+            router-direction="root"
+            @click="closeMenu"
+          >
+            <ion-label>
+              <span>
+                <ion-icon :icon="headset"></ion-icon>
+              </span>
+              <ion-text>Lyden af festival</ion-text>
             </ion-label>
           </ion-button>
         </li>
@@ -224,7 +224,7 @@
 <script setup lang="js">
 import { reactive, onBeforeMount, computed } from "vue";
 import { IonApp, IonRouterOutlet, IonIcon, IonText, IonLabel, IonButton } from "@ionic/vue";
-import { home, heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, thumbsUp, closeOutline, ticket, happy } from "ionicons/icons"
+import { home, heart, musicalNotes, tennisball, fastFood, footstepsOutline, information, diamond, closeOutline, ticket, happy, headset } from "ionicons/icons"
 
 import votingItem from "./components/votingItem.vue";
 
@@ -580,7 +580,7 @@ ion-text {
 
 .pop li:nth-child(1) {
   left: -60px;
-  bottom: 65px;
+  bottom: 45px;
   transition-duration: 0.5s;
 }
 
@@ -594,5 +594,9 @@ ion-text {
   z-index: 2;
   transition:/* easeInBack */ background-color 0.3s;
   background-color: rgba(0, 0, 0, 0.75);
+}
+
+.ticket-link {
+  bottom: 65px !important;
 }
 </style>
