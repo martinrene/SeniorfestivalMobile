@@ -19,7 +19,6 @@ const currentActiveVotingChoices = computed(() => {
 });
 
 function doVote(choice) {
-  console.log("log", choice);
   votingsStore.addVote(currentActiveVoting.value.votingId, choice);
 }
 
@@ -88,12 +87,12 @@ ion-card-title {
   top: 0px;
   z-index: 500;
   transition: transform 0.5s ease-out;
-  transform: translateY(-100%);
+  transform: translateY(calc(var(--safe-area-inset-top, 0) * -1 - 100%));
   color: white;
 }
 
 .voting-container.open {
-  transform: translateY(0);
+  transform: translateY(calc(var(--safe-area-inset-top, 0)));
 }
 
 ion-card,

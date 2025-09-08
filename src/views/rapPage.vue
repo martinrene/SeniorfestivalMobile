@@ -175,7 +175,7 @@ function stopAudio() {
 
 .playbutton {
   position: absolute;
-  top: 30px;
+  top: calc(var(--safe-area-inset-top, 0) + 30px);
   right: 30px;
   z-index: 51;
   width: 50px;
@@ -185,7 +185,7 @@ function stopAudio() {
 
 .stopbutton {
   position: absolute;
-  top: 40px;
+  top: calc(var(--safe-area-inset-top, 0) + 40px);
   right: 40px;
   z-index: 51;
   width: 40px;
