@@ -27,7 +27,7 @@
     "capacitor-plugin-safe-area": "^4.0.0",
     "ionicons": "^8.0.0",
     "onesignal-cordova-plugin": "^5.2.15",
-    "pinia": "^3.0.3",
+    "pinia": "^4.0.2",
     "vue": "^3.3.0",
     "vue-router": "^4.2.0"
   },
