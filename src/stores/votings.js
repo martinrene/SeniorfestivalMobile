@@ -28,7 +28,7 @@ export const useVotingsStore = defineStore("votings", {
           );
         });
       } catch {
-        // eslint-disable-next-line no-empty
+        // ignore fetch errors
       }
     },
 
