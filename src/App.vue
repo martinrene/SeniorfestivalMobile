@@ -410,6 +410,7 @@ ion-button.heartButton {
   left: 0;
   overflow: hidden;
   position: absolute;
+  z-index: 100;
 }
 
 .circle:after {
@@ -420,10 +421,11 @@ ion-button.heartButton {
   -webkit-border-radius: 86px;
   border-radius: 86px;
   background: rgba(0, 0, 0, 0);
+  background: blue;
   position: absolute;
   top: -96px;
   left: -30px;
-  border: 40px solid var(--sf-primary-color);
+  border: 40px solid yellow;
 }
 
 /* Popup Menu */
