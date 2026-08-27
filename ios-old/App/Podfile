@@ -18,6 +18,7 @@ def capacitor_pods
   pod 'CapacitorLiveUpdates', :path => '../../node_modules/@capacitor/live-updates'
   pod 'CapacitorStatusBar', :path => '../../node_modules/@capacitor/status-bar'
   pod 'CapacitorPluginSafeArea', :path => '../../node_modules/capacitor-plugin-safe-area'
+  pod 'OneSignalCordovaDependencies', :git => 'https://github.com/OneSignal/OneSignal-Cordova-SDK.git', :tag => '5.5.1'
   pod 'CordovaPluginsStatic', :path => '../capacitor-cordova-ios-plugins'
 end
 

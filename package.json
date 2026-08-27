@@ -12,12 +12,12 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@capacitor/android": "8.4.2",
+    "@capacitor/android": "^8.4.2",
     "@capacitor/app": "8.1.1",
     "@capacitor/core": "^8.4.2",
     "@capacitor/device": "^8.0.3",
     "@capacitor/haptics": "8.0.2",
-    "@capacitor/ios": "8.4.2",
+    "@capacitor/ios": "^8.4.2",
     "@capacitor/keyboard": "8.0.5",
     "@capacitor/live-updates": "^0.5.0",
     "@capacitor/status-bar": "8.0.3",
@@ -26,6 +26,7 @@
     "@ionic/vue-router": "^8.0.0",
     "capacitor-plugin-safe-area": "^5.0.1",
     "ionicons": "^8.0.0",
+    "jsqr": "^1.4.0",
     "onesignal-cordova-plugin": "^5.2.15",
     "pinia": "^4.0.2",
     "vue": "^3.3.0",
