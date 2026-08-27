@@ -421,11 +421,10 @@ ion-button.heartButton {
   -webkit-border-radius: 86px;
   border-radius: 86px;
   background: rgba(0, 0, 0, 0);
-  background: blue;
   position: absolute;
   top: -96px;
   left: -30px;
-  border: 40px solid yellow;
+  border: 40px solid var(--sf-primary-color);
 }
 
 /* Popup Menu */
