@@ -75,6 +75,12 @@ const routes = [
   },
 
   {
+    path: "/queues",
+    name: "Queues",
+    component: () => import("@/views/queuesPage.vue"),
+  },
+
+  {
     path: "/text/:type",
     name: "Text",
     component: () => import("@/views/textPage.vue"),
