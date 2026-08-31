@@ -5,7 +5,7 @@
 
     <div class="scannerFrame"></div>
 
-    <p v-if="state.errorMessage" class="scannerError">{{ state.errorMessage }}</p>
+    <p class="scannerHint">Hold kameraet hen over aktivitetens QR-kode</p>
 
     <ion-button class="closeButton" fill="clear" @click="close">
       <ion-icon :icon="closeOutline"></ion-icon>
@@ -14,25 +14,26 @@
 </template>
 
 <script setup lang="js">
-import { reactive, ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { IonButton, IonIcon } from "@ionic/vue";
 import { closeOutline } from "ionicons/icons";
 import jsQR from "jsqr";
 
-const emit = defineEmits(["scanned", "close"]);
+const emit = defineEmits(["scanned", "close", "unavailable"]);
 
 const videoEl = ref(null);
 const canvasEl = ref(null);
-
-const state = reactive({
-  errorMessage: null,
-});
 
 let stream;
 let animationFrameId;
 let hasScanned = false;
 
 onMounted(async () => {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    emit("unavailable", "unsupported");
+    return;
+  }
+
   try {
     stream = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: "environment" },
@@ -40,8 +41,12 @@ onMounted(async () => {
     videoEl.value.srcObject = stream;
     await videoEl.value.play();
     scanFrame();
-  } catch {
-    state.errorMessage = "Kunne ikke få adgang til kameraet.";
+  } catch (err) {
+    console.log(`SF qrScanner: ${err?.name} ${err?.message}`);
+    emit(
+      "unavailable",
+      err?.name === "NotAllowedError" ? "denied" : "failed"
+    );
   }
 });
 
@@ -119,13 +124,15 @@ function close() {
   box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.5);
 }
 
-.scannerError {
+.scannerHint {
   position: absolute;
-  bottom: 60px;
-  left: 20px;
-  right: 20px;
+  top: calc(50% + 160px);
+  left: 30px;
+  right: 30px;
   text-align: center;
   color: white;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .closeButton {

@@ -406,8 +406,8 @@ ion-button.heartButton {
 .circle {
   display: block;
   width: 112px;
-  height: 50px;
-  top: -50px;
+  height: 51px;
+  top: -51px;
   left: 0;
   overflow: hidden;
   position: absolute;

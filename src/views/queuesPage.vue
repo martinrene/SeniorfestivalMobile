@@ -1,70 +1,103 @@
 <template>
   <ion-page>
     <ion-content>
-      <div class="joinSection">
+      <!-- Step: list of queues -->
+      <div v-if="state.step === 'list'">
+        <div class="joinSection">
+          <ion-button expand="block" class="joinButton" @click="startJoinFlow">
+            <ion-icon slot="start" :icon="qrCodeOutline"></ion-icon>
+            Hop ind i en kø
+          </ion-button>
+
+          <p v-if="state.joinError" class="joinError">{{ state.joinError }}</p>
+          <p v-if="state.isJoining" class="joinPending">Stiller dig i kø …</p>
+        </div>
+
+        <ion-list v-if="queuesStore.queues.length > 0" lines="none">
+          <ion-item v-for="queue in queuesStore.queues" :key="queue.id">
+            <div class="queueCard">
+              <div class="queueName">{{ queue.activityName }}</div>
+              <div class="queueDetails">
+                <span class="queuePosition">
+                  Placering {{ queue.position }}
+                </span>
+                <span>{{ formatWaitTime(queue.estimatedWaitMinutes) }}</span>
+              </div>
+            </div>
+          </ion-item>
+        </ion-list>
+
+        <div v-else class="noQueuesContainer">
+          <p>Du er ikke tilmeldt nogen køer endnu.</p>
+          <p>
+            Tryk på <strong>Hop ind i en kø</strong> og scan QR-koden ved
+            aktiviteten.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step: enter name -->
+      <div v-else-if="state.step === 'name'" class="stepContainer">
+        <h2>Hvad hedder du?</h2>
+        <p class="stepHint">
+          Dit navn bliver vist ved aktiviteten, så de kan kalde dig op.
+        </p>
+
         <ion-input
-          v-model="nameModel"
+          v-model="state.nameDraft"
           placeholder="Dit navn"
           clear-input
-          class="nameInput"
+          class="stepInput"
+          @keyup.enter="saveName"
         ></ion-input>
 
         <ion-button
           expand="block"
-          :disabled="!queuesStore.name"
-          @click="state.isScannerOpen = true"
+          class="joinButton"
+          :disabled="!state.nameDraft.trim()"
+          @click="saveName"
         >
-          <ion-icon slot="start" :icon="qrCodeOutline"></ion-icon>
-          Scan QR-kode
+          Gem navn
         </ion-button>
 
-        <div class="codeEntry">
-          <ion-input
-            v-model="state.textCode"
-            placeholder="Indtast kode"
-            clear-input
-            @keyup.enter="joinWithTextCode"
-          ></ion-input>
-          <ion-button
-            :disabled="!state.textCode || !queuesStore.name"
-            @click="joinWithTextCode"
-          >
-            Deltag
-          </ion-button>
-        </div>
-
-        <p v-if="!queuesStore.name" class="joinHint">
-          Indtast dit navn for at kunne stille dig i kø.
-        </p>
-
-        <p v-if="state.joinError" class="joinError">{{ state.joinError }}</p>
+        <ion-button expand="block" fill="clear" class="cancelButton" @click="cancelFlow">
+          Annuller
+        </ion-button>
       </div>
 
-      <ion-list v-if="queuesStore.queues.length > 0" lines="inset">
-        <ion-item v-for="queue in queuesStore.queues" :key="queue.id">
-          <div class="queueRow">
-            <div class="queueName">{{ queue.activityName }}</div>
-            <div class="queueDetails">
-              <span>Placering {{ queue.position }} af {{ queue.totalInQueue }}</span>
-              <span>{{ formatWaitTime(queue.estimatedWaitMinutes) }}</span>
-            </div>
-          </div>
-        </ion-item>
-      </ion-list>
+      <!-- Step: manual code fallback -->
+      <div v-else-if="state.step === 'code'" class="stepContainer">
+        <h2>Indtast aktivitetens kode</h2>
+        <p class="stepHint">{{ scannerFallbackHint }}</p>
 
-      <div v-else class="noQueuesContainer">
-        <p>Du er ikke tilmeldt nogen køer endnu.</p>
-        <p>
-          Scan QR-koden ved aktiviteten, eller indtast koden herover, for at
-          stille dig i kø.
-        </p>
+        <ion-input
+          v-model="state.textCode"
+          placeholder="Aktivitetskode"
+          clear-input
+          class="stepInput"
+          @keyup.enter="joinWithTextCode"
+        ></ion-input>
+
+        <ion-button
+          expand="block"
+          class="joinButton"
+          :disabled="!state.textCode.trim()"
+          @click="joinWithTextCode"
+        >
+          Deltag
+        </ion-button>
+
+        <ion-button expand="block" fill="clear" class="cancelButton" @click="cancelFlow">
+          Annuller
+        </ion-button>
       </div>
     </ion-content>
 
     <qr-scanner
-      v-if="state.isScannerOpen"
+      v-if="state.step === 'scanner'"
       @scanned="onScanned"
-      @close="state.isScannerOpen = false"
+      @unavailable="onScannerUnavailable"
+      @close="cancelFlow"
     />
   </ion-page>
 </template>
@@ -79,20 +112,30 @@ import qrScanner from "@/components/qrScanner.vue";
 const queuesStore = useQueuesStore();
 
 const state = reactive({
+  step: "list",
+  nameDraft: "",
   textCode: "",
   joinError: null,
-  isScannerOpen: false,
+  isJoining: false,
+  scannerFailure: null,
 });
 
-const nameModel = computed({
-  get: () => queuesStore.name,
-  set: (value) => queuesStore.setName(value),
+const scannerFallbackHint = computed(() => {
+  switch (state.scannerFailure) {
+    case "denied":
+      return "Appen har ikke adgang til kameraet. Du kan give adgang under Indstillinger, eller indtaste koden her.";
+    case "unsupported":
+    case "failed":
+      return "Kameraet kunne ikke åbnes. Indtast koden, der står ved aktiviteten.";
+    default:
+      return "Indtast koden, der står ved aktiviteten.";
+  }
 });
 
 let refreshInterval;
 
-onBeforeMount(() => {
-  queuesStore.loadName();
+onBeforeMount(async () => {
+  await queuesStore.loadName();
   queuesStore.fetchQueues();
   refreshInterval = setInterval(() => {
     queuesStore.fetchQueues();
@@ -103,26 +146,67 @@ onUnmounted(() => {
   clearInterval(refreshInterval);
 });
 
+function startJoinFlow() {
+  state.joinError = null;
+  state.scannerFailure = null;
+
+  if (queuesStore.name) {
+    state.step = "scanner";
+    return;
+  }
+
+  state.nameDraft = "";
+  state.step = "name";
+}
+
+async function saveName() {
+  const name = state.nameDraft.trim();
+
+  if (!name) {
+    return;
+  }
+
+  await queuesStore.setName(name);
+  state.step = "scanner";
+}
+
+function onScannerUnavailable(reason) {
+  state.scannerFailure = reason;
+  state.textCode = "";
+  state.step = "code";
+}
+
+function cancelFlow() {
+  state.step = "list";
+}
+
 function onScanned(code) {
-  state.isScannerOpen = false;
+  state.step = "list";
   joinQueue(code);
 }
 
 function joinWithTextCode() {
-  if (!state.textCode) {
+  const code = state.textCode.trim();
+
+  if (!code) {
     return;
   }
-  joinQueue(state.textCode);
+
+  state.step = "list";
+  joinQueue(code);
 }
 
 async function joinQueue(code) {
   state.joinError = null;
+  state.isJoining = true;
 
   try {
     await queuesStore.joinQueueByCode(code);
     state.textCode = "";
   } catch (err) {
     state.joinError = err.message;
+  } finally {
+    state.isJoining = false;
   }
 }
 
@@ -143,64 +227,104 @@ function formatWaitTime(minutes) {
 
 <style scoped>
 .joinSection {
-  padding: 20px 15px 10px;
+  padding: 20px 14px 6px;
 }
 
-.nameInput {
-  --background: rgba(255, 255, 255, 0.8);
-  --padding-start: 12px;
-  border-radius: 8px;
-  margin-bottom: 15px;
+.joinButton {
+  --background: var(--sf-primary-color);
+  --background-activated: var(--sf-primary-color-2);
+  --background-focused: var(--sf-primary-color-2);
+  --color: #fff;
+  --border-radius: 999px;
+  --box-shadow: var(--sf-card-shadow);
+  height: 52px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-transform: none;
 }
 
-.codeEntry {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.codeEntry ion-input {
-  flex: 1;
-  --background: rgba(255, 255, 255, 0.8);
-  --padding-start: 12px;
-  border-radius: 8px;
-}
-
-.joinHint {
-  margin-top: 10px;
-  font-size: 0.9rem;
+.cancelButton {
+  --color: var(--sf-muted-color);
+  margin-top: 6px;
+  text-transform: none;
+  font-weight: 600;
 }
 
 .joinError {
   color: var(--sf-primary-color);
-  margin-top: 10px;
+  font-weight: 600;
+  margin-top: 12px;
+  text-align: center;
 }
 
-.queueRow {
-  display: flex;
-  flex-direction: column;
+.joinPending {
+  color: var(--sf-muted-color);
+  margin-top: 12px;
+  text-align: center;
+}
+
+.stepContainer {
+  padding: 40px 30px 0;
+  margin-top: var(--safe-area-inset-top, 0);
+  text-align: center;
+}
+
+.stepHint {
+  color: var(--sf-muted-color);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.stepInput {
+  --background: var(--sf-surface-color);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  border-radius: 14px;
+  box-shadow: var(--sf-card-shadow);
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+.queueCard {
   width: 100%;
-  padding: 10px 0;
+  background: var(--sf-surface-color);
+  border-radius: var(--sf-card-radius);
+  border-left: 6px solid var(--sf-primary-color);
+  box-shadow: var(--sf-card-shadow);
+  padding: 16px 18px;
 }
 
 .queueName {
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1.25rem;
+  font-weight: 800;
 }
 
 .queueDetails {
   display: flex;
   justify-content: space-between;
-  margin-top: 5px;
+  gap: 10px;
+  margin-top: 6px;
   font-size: 0.9rem;
+  color: var(--sf-muted-color);
+}
+
+.queuePosition {
+  color: var(--sf-primary-color);
+  font-weight: 700;
 }
 
 .noQueuesContainer {
-  margin-top: 30px;
-  margin-left: 40px;
-  margin-right: 40px;
-  line-height: 1.5;
+  margin: 20px 40px 0;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--sf-muted-color);
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --background: transparent;
+  margin: 0 14px 14px 14px;
 }
 
 ion-content::part(scroll) {
