@@ -52,12 +52,23 @@
           <img src="/image/liveradio.png" />
         </div>
       </div>
-      <img
+      <svg
         v-if="!state.isSpinningUp && !state.isSpinning && !state.isSpinningDown"
-        src="/image/playbutton.png"
         class="playbutton"
+        viewBox="0 0 64 64"
+        role="button"
+        aria-label="Afspil live radio"
         @click="toggleAudio"
-      />
+      >
+        <circle cx="32" cy="32" r="30" fill="var(--sf-primary-color)" />
+        <path
+          d="M27 21 L45 32 L27 43 Z"
+          fill="#fff"
+          stroke="#fff"
+          stroke-width="3"
+          stroke-linejoin="round"
+        />
+      </svg>
     </div>
   </ion-page>
 </template>
@@ -223,7 +234,7 @@ function stopSpinning() {
 .remainCounter {
   text-align: center;
   z-index: 10;
-  margin-top: calc(var(--safe-area-inset-top, 0) + 10px);
+  margin-top: calc(var(--safe-area-inset-top, 0px) + 10px);
   color: var(--sf-primary-color);
   position: absolute;
   width: 100%;
@@ -331,6 +342,9 @@ function stopSpinning() {
   right: 110px;
   z-index: 51;
   width: 50px;
+  height: 50px;
+  cursor: pointer;
+  filter: drop-shadow(0 3px 8px rgba(21, 18, 26, 0.35));
   animation: shake 0.8s;
   animation-iteration-count: infinite;
 }

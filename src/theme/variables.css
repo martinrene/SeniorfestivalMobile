@@ -18,6 +18,18 @@ http://ionicframework.com/docs/theming/ */
 :root,
 :root[mode="ios"],
 :root[mode="md"] {
+  /* Safe-area insets.
+     iOS: env() reports real values for notch and home indicator.
+     Android: env(safe-area-inset-top) is always 0 -- it only exposes display
+     cutout insets, never the status bar -- so a floor is needed or the status
+     bar overlaps the app. max() means a larger real inset still wins.
+     !important because it must survive an inline value on <html>; inline styles
+     otherwise outrank every stylesheet rule. */
+  --safe-area-inset-top: max(env(safe-area-inset-top, 0px), 34px) !important;
+  --safe-area-inset-right: env(safe-area-inset-right, 0px);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-inset-left: env(safe-area-inset-left, 0px);
+
   --ion-font-family: "Work Sans", "brico-normal", sans-serif !important;
   font-family: "Work Sans", "brico-normal", sans-serif !important;
   font-size: 0.9rem;

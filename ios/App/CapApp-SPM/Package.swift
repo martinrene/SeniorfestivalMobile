@@ -16,9 +16,7 @@ let package = Package(
         .package(name: "CapacitorDevice", path: "../../../node_modules/@capacitor/device"),
         .package(name: "CapacitorHaptics", path: "../../../node_modules/@capacitor/haptics"),
         .package(name: "CapacitorKeyboard", path: "../../../node_modules/@capacitor/keyboard"),
-        .package(name: "CapacitorLiveUpdates", path: "../../../node_modules/@capacitor/live-updates"),
         .package(name: "CapacitorStatusBar", path: "../../../node_modules/@capacitor/status-bar"),
-        .package(name: "CapacitorPluginSafeArea", path: "../../../node_modules/capacitor-plugin-safe-area"),
         .package(name: "onesignal-cordova-plugin", path: "../../../node_modules/onesignal-cordova-plugin")
     ],
     targets: [
@@ -31,9 +29,7 @@ let package = Package(
                 .product(name: "CapacitorDevice", package: "CapacitorDevice"),
                 .product(name: "CapacitorHaptics", package: "CapacitorHaptics"),
                 .product(name: "CapacitorKeyboard", package: "CapacitorKeyboard"),
-                .product(name: "CapacitorLiveUpdates", package: "CapacitorLiveUpdates"),
                 .product(name: "CapacitorStatusBar", package: "CapacitorStatusBar"),
-                .product(name: "CapacitorPluginSafeArea", package: "CapacitorPluginSafeArea"),
                 .product(name: "onesignal-cordova-plugin", package: "onesignal-cordova-plugin")
             ]
         )

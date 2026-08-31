@@ -132,7 +132,7 @@ ion-item-divider {
 
 ion-segment {
   width: calc(100% - 28px);
-  margin: var(--safe-area-inset-top, 0) 14px 4px;
+  margin: calc(var(--safe-area-inset-top, 0px) + 8px) 14px 4px;
   padding: 4px;
   border-radius: 999px;
   --background: var(--sf-surface-color);

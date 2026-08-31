@@ -23,9 +23,23 @@ export const useVotingsStore = defineStore("votings", {
         }
 
         response.json().then((result) => {
-          this.votings = result.sort(
+          const sorted = result.sort(
             (a, b) => a.voting.timeStamp - b.voting.timeStamp
           );
+
+          // Keep votes registered on this device that the API has not
+          // echoed back yet, so polling doesn't reset the user's choice.
+          this.votings = sorted.map((incoming) => {
+            if (incoming.vote) {
+              return incoming;
+            }
+
+            const known = this.votings.find(
+              (v) => v.voting?.votingId === incoming.voting?.votingId
+            );
+
+            return known?.vote ? { ...incoming, vote: known.vote } : incoming;
+          });
         });
       } catch {
         // ignore fetch errors
@@ -51,8 +65,13 @@ export const useVotingsStore = defineStore("votings", {
         choice,
       };
 
-      const voting = this.votings.find((v) => (v.votingId = votingId));
-      voting.vote = voteObj;
+      const voting = this.votings.find(
+        (v) => v.voting?.votingId === votingId
+      );
+
+      if (voting) {
+        voting.vote = voteObj;
+      }
 
       await fetch(await apiUrl(), {
         method: "POST",

@@ -7,6 +7,8 @@ const config: CapacitorConfig = {
 
   android: {
     allowMixedContent: true,
+    // Matches the app background so the status bar strip blends in.
+    backgroundColor: "#f2ece3",
   },
 
   ios: {
@@ -20,15 +22,6 @@ const config: CapacitorConfig = {
     // needs https rather than the default capacitor:// scheme.
     iosScheme: "https",
     cleartext: true,
-  },
-
-  plugins: {
-    LiveUpdates: {
-      appId: "ef2f7813",
-      channel: "Production",
-      autoUpdateMethod: "background",
-      maxVersions: 2,
-    },
   },
 };
 

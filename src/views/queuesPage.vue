@@ -265,7 +265,7 @@ function formatWaitTime(minutes) {
 
 .stepContainer {
   padding: 40px 30px 0;
-  margin-top: var(--safe-area-inset-top, 0);
+  margin-top: var(--safe-area-inset-top, 0px);
   text-align: center;
 }
 
@@ -328,6 +328,6 @@ ion-item {
 }
 
 ion-content::part(scroll) {
-  padding-top: var(--safe-area-inset-top, 0);
+  padding-top: var(--safe-area-inset-top, 0px);
 }
 </style>

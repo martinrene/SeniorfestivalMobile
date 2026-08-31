@@ -9,8 +9,6 @@ import { Capacitor } from "@capacitor/core";
 import * as capacitorApp from "@capacitor/app";
 import OneSignal from "onesignal-cordova-plugin";
 
-import { SafeArea } from "capacitor-plugin-safe-area";
-
 import { useAppStore } from "@/stores/app";
 import { useDataStore } from "@/stores/data";
 import { useMyEventsStore } from "@/stores/myEvents";
@@ -67,8 +65,6 @@ router.isReady().then(() => {
   }
 
   app.mount("#app");
-
-  fixSafeArea();
 });
 
 async function oneSignalInit() {
@@ -137,16 +133,4 @@ function handleNotificationEvent(evnt) {
       router.replace("/home?start=true");
     }
   }
-}
-
-async function fixSafeArea() {
-  SafeArea.getSafeAreaInsets().then((data) => {
-    const { insets } = data;
-    for (const [key, value] of Object.entries(insets)) {
-      document.documentElement.style.setProperty(
-        `--safe-area-inset-${key}`,
-        `${value}px`
-      );
-    }
-  });
 }

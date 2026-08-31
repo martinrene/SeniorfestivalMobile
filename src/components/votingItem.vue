@@ -63,10 +63,11 @@ function stopVoting() {
 
 <style lang="css" scoped>
 p {
-  margin-top: 30px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 26px 20px 18px;
   text-align: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.4;
 }
 
 ion-list {
@@ -87,26 +88,41 @@ ion-card-title {
   top: 0px;
   z-index: 500;
   transition: transform 0.5s ease-out;
-  transform: translateY(calc(var(--safe-area-inset-top, 0) * -1 - 100%));
+  transform: translateY(calc(var(--safe-area-inset-top, 0px) * -1 - 100%));
   color: white;
 }
 
 .voting-container.open {
-  transform: translateY(calc(var(--safe-area-inset-top, 0)));
+  transform: translateY(calc(var(--safe-area-inset-top, 0px)));
 }
 
 ion-card,
 ion-card:disabled {
   opacity: 1;
-  background-color: #7933d4;
-  color: white;
-  margin-bottom: 20px;
+  background: var(--sf-surface-color);
+  color: var(--ion-text-color);
+  border-radius: var(--sf-card-radius);
+  box-shadow: 0 6px 16px rgba(21, 18, 26, 0.18);
+  margin: 0 14px 14px;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
 }
 
-ion-card.not-selected {
-  background-color: #cba3ff;
-  color: white;
-  opacity: 0.8;
+ion-card ion-card-title {
+  color: var(--ion-text-color);
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+/* After voting, the choices the user did not pick recede into the panel */
+ion-card.not-selected,
+ion-card.not-selected:disabled {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+}
+
+ion-card.not-selected ion-card-title {
+  color: #fff;
+  font-weight: 600;
 }
 
 ion-list {
@@ -121,9 +137,14 @@ ion-list {
 .close-button ion-button {
   margin-left: auto;
   margin-right: auto;
-  background-color: white;
-  border-radius: 40px;
-  width: 20%;
-  color: var(--sf-primary-color);
+  --background: #fff;
+  --background-activated: #fff;
+  --background-focused: #fff;
+  --color: var(--sf-primary-color);
+  --border-radius: 999px;
+  --box-shadow: 0 4px 12px rgba(21, 18, 26, 0.18);
+  min-width: 110px;
+  font-weight: 800;
+  text-transform: none;
 }
 </style>
