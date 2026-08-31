@@ -12,7 +12,7 @@
 
     <ion-segment-view>
       <ion-segment-content id="shop">
-        <ion-list lines="inset">
+        <ion-list lines="none">
           <ion-item v-for="shop in shops" :key="shop.id" mode="ios">
             <shop-item :shop="shop"></shop-item>
           </ion-item>
@@ -20,7 +20,7 @@
       </ion-segment-content>
 
       <ion-segment-content id="committee">
-        <ion-list lines="inset">
+        <ion-list lines="none">
           <ion-item
             v-for="committee in committees"
             :key="committee.id"
@@ -55,5 +55,11 @@ const committees = computed(() => dataStore.committees);
 ion-item {
   --inner-padding-end: 0px;
   --padding-start: 0px;
+  --background: transparent;
+  margin: 0 14px 14px 14px;
+}
+
+ion-list {
+  padding-top: 4px;
 }
 </style>

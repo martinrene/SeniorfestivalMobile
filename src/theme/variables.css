@@ -18,20 +18,35 @@ http://ionicframework.com/docs/theming/ */
 :root,
 :root[mode="ios"],
 :root[mode="md"] {
-  --ion-font-family: "brico-normal", sans-serif !important;
-  font-family: "brico-normal", sans-serif !important;
+  --ion-font-family: "Work Sans", "brico-normal", sans-serif !important;
+  font-family: "Work Sans", "brico-normal", sans-serif !important;
   font-size: 0.9rem;
 
-  --ion-background: black;
-  --ion-background-color: black;
+  --ion-background: #f2ece3;
+  --ion-background-color: #f2ece3;
 
   --ion-item-background: transparent;
 
-  --ion-color: white;
-  --ion-text-color: white;
+  --ion-color: #15121a;
+  --ion-text-color: #15121a;
 
-  --sf-primary-color: #ff733c;
+  --sf-primary-color: #ff5a3c;
+  --sf-primary-color-2: #ff2d72;
+  --sf-gradient: linear-gradient(135deg, #ff6a00, #ff2d72);
   --background-checked: var(--sf-primary-color);
+
+  --sf-surface-color: #ffffff;
+  --sf-secondary-color: #2ea3f2;
+  --sf-muted-color: #6f6a63;
+  --sf-card-radius: 22px;
+  --sf-card-shadow: 0 10px 26px rgba(21, 18, 26, 0.1);
+  --sf-page-background: radial-gradient(
+      circle at 12% 8%,
+      rgba(255, 106, 0, 0.1),
+      transparent 32%
+    ),
+    radial-gradient(circle at 90% 78%, rgba(255, 45, 114, 0.1), transparent 34%),
+    #f2ece3;
 }
 
 :host {
@@ -44,25 +59,30 @@ h4 {
   margin: 0px;
   margin-bottom: 4px;
   padding: 0px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
 h1 {
   font-size: 3.6rem;
+  font-weight: 900;
   text-align: center;
   margin-top: 30px;
 }
 
 h2 {
   font-size: 2rem;
+  font-weight: 800;
 }
 
 h3 {
   font-size: 1.2rem;
+  font-weight: 700;
 }
 
 a,
 a:hover {
-  color: white;
+  color: var(--ion-text-color);
   text-decoration: none;
 }
 

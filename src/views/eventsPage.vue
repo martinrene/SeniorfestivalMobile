@@ -38,7 +38,7 @@
             detail="false"
             button
           >
-            <schedule-event :event="event" />
+            <schedule-event :event="event" :type="eventBadgeType(event)" />
           </ion-item>
         </ion-list>
       </ion-segment-content>
@@ -66,7 +66,7 @@
             detail="false"
             tappable
           >
-            <schedule-event :event="event" />
+            <schedule-event :event="event" :type="eventBadgeType(event)" />
           </ion-item>
         </ion-list>
       </ion-segment-content>
@@ -94,7 +94,7 @@
             detail="false"
             tappable
           >
-            <schedule-event :event="event" />
+            <schedule-event :event="event" :type="eventBadgeType(event)" />
           </ion-item>
         </ion-list>
       </ion-segment-content>
@@ -191,6 +191,16 @@ const eventsSunday = computed(() => {
 function onDayChanged(evt) {
   state.currentSelectedDay = evt.detail.value;
 }
+
+function eventBadgeType(event) {
+  if (props.type !== "mySchedule") {
+    return props.type;
+  }
+
+  return dataStore.scheduleEvents?.some((e) => e.rowKey === event.rowKey)
+    ? "schedule"
+    : "activities";
+}
 </script>
 
 <style lang="css" scoped>
@@ -203,6 +213,17 @@ a {
   margin-left: 40px;
   margin-right: 40px;
   line-height: 1.5;
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --background: transparent;
+  margin: 0 14px 14px 14px;
+}
+
+ion-list {
+  padding-top: 4px;
 }
 
 ion-icon {

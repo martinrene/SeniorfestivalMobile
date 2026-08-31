@@ -155,7 +155,7 @@
               <span>
                 <ion-icon :icon="musicalNotes"></ion-icon>
               </span>
-              <ion-text>Program</ion-text>
+              <ion-text>Sceneprogram</ion-text>
             </ion-label>
           </ion-button>
         </li>
@@ -387,7 +387,8 @@ ion-button.heartButton {
   background: var(--sf-primary-color);
   background: linear-gradient(
     145deg,
-    rgba(255, 115, 60, 1) 20%,
+    var(--sf-primary-color) 0%,
+    var(--sf-primary-color) 30%,
     rgba(237, 221, 83, 1) 100%
   );
 }
