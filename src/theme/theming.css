@@ -133,6 +133,13 @@ ion-item-divider {
 ion-segment {
   width: calc(100% - 28px);
   margin: calc(var(--safe-area-inset-top, 0px) + 8px) 14px 4px;
+  /* A floor rather than a fixed height, so taller labels (md mode, larger
+     system font scaling) grow the bar instead of being clipped. */
+  box-sizing: border-box;
+  min-height: 48px;
+  /* ion-page is a flex column, so the segment would otherwise be shrunk
+     below its height to make room for the list. */
+  flex-shrink: 0;
   padding: 4px;
   border-radius: 999px;
   --background: var(--sf-surface-color);
@@ -143,6 +150,11 @@ ion-segment-button {
   --indicator-color: transparent;
   --indicator-box-shadow: none;
   --border-radius: 999px;
+  /* Ionic's ios mode adds margin: 2px, which pushed the button past the
+     segment's height and left it sitting low. The segment's own 4px padding
+     provides the inset instead. min-height (not height) so a label that needs
+     more room grows the button rather than getting its descenders cut off. */
+  margin: 0;
   min-height: 40px;
   font-weight: 700;
   text-transform: none;
