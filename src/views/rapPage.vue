@@ -26,7 +26,17 @@
           />
         </svg>
 
-        <div v-else class="stopbutton" @click="toggleAudio">Stop</div>
+        <svg
+          v-else
+          class="playbutton stopbutton"
+          viewBox="0 0 64 64"
+          role="button"
+          aria-label="Stop afspilning"
+          @click="toggleAudio"
+        >
+          <circle cx="32" cy="32" r="30" fill="var(--sf-primary-color-2)" />
+          <rect x="23" y="23" width="18" height="18" rx="3" fill="#fff" />
+        </svg>
 
         <p>
           Du spurgte om vi ik’ sku’ ta’ på KE<br />
@@ -197,26 +207,10 @@ function stopAudio() {
   animation-iteration-count: infinite;
 }
 
+/* Shares .playbutton's size and position so the control does not jump when
+   toggling; only the shake is dropped once playback has started. */
 .stopbutton {
-  position: absolute;
-  top: calc(var(--sf-inset-top, 0px) + 40px);
-  right: 40px;
-  z-index: 51;
-  width: 40px;
-  height: 40px;
-  background-color: red;
-  border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: spinning 2s linear infinite;
-}
-
-@keyframes spinning {
-  100% {
-    -webkit-transform: rotate(720deg);
-    transform: rotate(720deg);
-  }
+  animation: none;
 }
 
 @keyframes shake {
