@@ -295,7 +295,9 @@ ion-button.heartButton {
   width: 70px;
   height: 70px;
   position: absolute;
-  background-color: var(--sf-primary-color);
+  /* Safe to gradient: the circle sits in the cream notch, so it has no shared
+     edge with the solid orange petals behind it. */
+  background: var(--sf-gradient);
   top: -100px;
   left: 18px;
   border-radius: 80px;
@@ -385,11 +387,13 @@ ion-button.heartButton {
   border-bottom-right-radius: 6px;
 
   background: var(--sf-primary-color);
+  /* Ends on the palette pink rather than the old yellow, so the petal matches
+     the gradient now used on the avatar, the day selector and the badges. */
   background: linear-gradient(
     145deg,
     var(--sf-primary-color) 0%,
     var(--sf-primary-color) 30%,
-    rgba(237, 221, 83, 1) 100%
+    var(--sf-primary-color-2) 100%
   );
 }
 
@@ -493,8 +497,15 @@ ion-button.heartButton {
 }
 
 li ion-button ion-label {
-  font-size: 1.8rem;
+  /* Android WebView scales text with the system font-size setting, and falls
+     back to a wider face if Work Sans has not loaded. At 1.8rem the longest
+     labels then wrapped onto two or three lines and collided with the page
+     behind. Slightly smaller, and never wrapping, keeps every label on one
+     line with headroom for that scaling. */
+  font-size: 1.5rem;
+  line-height: 1.2;
   text-transform: none;
+  white-space: nowrap;
 }
 
 li {

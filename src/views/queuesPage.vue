@@ -231,7 +231,9 @@ function formatWaitTime(minutes) {
 }
 
 .joinButton {
-  --background: var(--sf-primary-color);
+  --background: var(--sf-gradient);
+  /* Solid pink while pressed, so there is still visible press feedback
+     against the gradient. */
   --background-activated: var(--sf-primary-color-2);
   --background-focused: var(--sf-primary-color-2);
   --color: #fff;
