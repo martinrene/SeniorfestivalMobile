@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The Android 12+ splash icon canvas is 288dp but only the central 192dp is
+     guaranteed visible (the rest is cropped by the circular mask). The source
+     logo is edge to edge, so inset it by 17% a side to leave the artwork
+     occupying that safe two thirds. Insetting in XML rather than re-rendering
+     the bitmap keeps it sharp at every density. -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/splash_logo"
+    android:inset="17%" />

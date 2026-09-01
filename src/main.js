@@ -7,7 +7,7 @@ import { IonicVue } from "@ionic/vue";
 
 import { Capacitor } from "@capacitor/core";
 import * as capacitorApp from "@capacitor/app";
-import OneSignal from "onesignal-cordova-plugin";
+import OneSignal, { LogLevel } from "@onesignal/capacitor-plugin";
 
 import { useAppStore } from "@/stores/app";
 import { useDataStore } from "@/stores/data";
@@ -69,20 +69,36 @@ router.isReady().then(() => {
 
 async function oneSignalInit() {
   try {
-    OneSignal.initialize("67227112-3773-4d4d-96f3-3540cf972f47");
+    // TODO remove once push is confirmed working: makes the OneSignal SDK log
+    // its registration steps to logcat / Xcode console.
+    OneSignal.Debug.setLogLevel(LogLevel.Verbose);
+
+    // initialize/login return promises; awaiting them matters because
+    // requestPermission on an uninitialised SDK silently does nothing.
+    await OneSignal.initialize("67227112-3773-4d4d-96f3-3540cf972f47");
+
     const appStore = useAppStore();
     const identifier = await appStore.fetchDeviceId();
-    OneSignal.login(identifier);
+    await OneSignal.login(identifier);
 
     OneSignal.Notifications.addEventListener("click", handleNotificationEvent);
     OneSignal.Notifications.addEventListener(
       "foregroundWillDisplay",
-      handleNotificationEvent
+      handleNotificationEvent,
     );
 
-    OneSignal.Notifications.requestPermission(false).then();
+    const alreadyGranted = await OneSignal.Notifications.hasPermission();
+    const canPrompt = await OneSignal.Notifications.canRequestPermission();
+    console.log(
+      `SF OneSignal: hasPermission=${alreadyGranted} canRequestPermission=${canPrompt}`
+    );
+
+    // fallbackToSettings: true so a user who previously denied is offered the
+    // system settings page instead of nothing happening at all.
+    const granted = await OneSignal.Notifications.requestPermission(true);
+    console.log(`SF OneSignal: requestPermission granted=${granted}`);
   } catch (e) {
-    console.log("SF OneSignalInit: " + e);
+    console.log(`SF OneSignalInit failed: ${e?.message ?? e}`);
   }
 }
 
@@ -117,12 +133,12 @@ function handleNotificationEvent(evnt) {
     } else if (additionalData.eventId && additionalData.eventDay) {
       router.replace(`/myschedule`);
       router.push(
-        `/myschedule/${additionalData.eventId}/${additionalData.eventDay}`
+        `/myschedule/${additionalData.eventId}/${additionalData.eventDay}`,
       );
     } else if (additionalData.shopId && additionalData.shopType) {
       router.replace(`/shops/${additionalData.shopType}`);
       router.push(
-        `/shops/${additionalData.shopType}/${additionalData.shopId}/details`
+        `/shops/${additionalData.shopType}/${additionalData.shopId}/details`,
       );
     } else if (additionalData.eventQueueNumber) {
       router.replace(`/queues`);

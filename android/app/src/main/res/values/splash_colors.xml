@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android 12+ splash screens take a solid colour, not the gradient used
+         in splash.png, so this is the midpoint of that gradient. Matches the
+         sf-primary-color custom property in the web layer. -->
+    <color name="splash_background">#FF5A3C</color>
+</resources>

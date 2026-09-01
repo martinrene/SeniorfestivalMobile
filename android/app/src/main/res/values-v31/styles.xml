@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From Android 12 (API 31) the SplashScreen API ignores a full-bleed
+         android:background and instead shows a centred icon over a solid
+         colour, so the drawable/splash.png used on older versions never
+         appears. Declare the API 31+ attributes explicitly. -->
+    <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_icon</item>
+        <!-- BridgeActivity also calls setTheme(AppTheme_NoActionBar); declaring
+             it here avoids a flash of the launch theme first. -->
+        <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
+    </style>
+</resources>

@@ -22,9 +22,9 @@
     "@ionic/storage": "^4.0.0",
     "@ionic/vue": "^8.0.0",
     "@ionic/vue-router": "^8.0.0",
+    "@onesignal/capacitor-plugin": "^1.1.8",
     "ionicons": "^8.0.0",
     "jsqr": "^1.4.0",
-    "onesignal-cordova-plugin": "^5.2.15",
     "pinia": "^4.0.2",
     "vue": "^3.3.0",
     "vue-router": "^4.2.0"
