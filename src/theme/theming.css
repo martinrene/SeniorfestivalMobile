@@ -132,7 +132,7 @@ ion-item-divider {
 
 ion-segment {
   width: calc(100% - 28px);
-  margin: calc(var(--safe-area-inset-top, 0px) + 8px) 14px 4px;
+  margin: calc(var(--sf-inset-top, 0px) + 8px) 14px 4px;
   /* A floor rather than a fixed height, so taller labels (md mode, larger
      system font scaling) grow the bar instead of being clipped. */
   box-sizing: border-box;

@@ -1,5 +1,5 @@
 <script setup lang="js">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { IonList, IonCard, IonCardHeader, IonCardTitle, IonButton } from "@ionic/vue";
 
 
@@ -7,6 +7,8 @@ import { useVotingsStore } from "@/stores/votings"
 
 
 const votingsStore = useVotingsStore();
+
+const voteError = ref(null);
 
 const currentActiveVoting = computed(() => votingsStore.currentVoting?.voting);
 const currentActiveVote = computed(() => votingsStore.currentVoting?.vote);
@@ -18,8 +20,16 @@ const currentActiveVotingChoices = computed(() => {
   return [];
 });
 
-function doVote(choice) {
-  votingsStore.addVote(currentActiveVoting.value.votingId, choice);
+async function doVote(choice) {
+  voteError.value = null;
+
+  try {
+    await votingsStore.addVote(currentActiveVoting.value.votingId, choice);
+  } catch {
+    // The store has already rolled the choice back, so the cards become
+    // tappable again and the user can retry.
+    voteError.value = "Din stemme kunne ikke sendes. Prøv igen.";
+  }
 }
 
 function isUserVotedAndThisIsNotSelected(choice) {
@@ -55,6 +65,8 @@ function stopVoting() {
       </ion-card>
     </ion-list>
 
+    <p v-if="voteError" class="vote-error">{{ voteError }}</p>
+
     <div class="close-button">
       <ion-button shape="round" @click="stopVoting"> Luk </ion-button>
     </div>
@@ -88,12 +100,12 @@ ion-card-title {
   top: 0px;
   z-index: 500;
   transition: transform 0.5s ease-out;
-  transform: translateY(calc(var(--safe-area-inset-top, 0px) * -1 - 100%));
+  transform: translateY(calc(var(--sf-inset-top, 0px) * -1 - 100%));
   color: white;
 }
 
 .voting-container.open {
-  transform: translateY(calc(var(--safe-area-inset-top, 0px)));
+  transform: translateY(calc(var(--sf-inset-top, 0px)));
 }
 
 ion-card,
@@ -127,6 +139,12 @@ ion-card.not-selected ion-card-title {
 
 ion-list {
   margin-bottom: 0px !important;
+}
+
+.vote-error {
+  margin: 0 20px 14px;
+  text-align: center;
+  font-weight: 700;
 }
 
 .close-button {

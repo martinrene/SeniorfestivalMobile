@@ -166,7 +166,7 @@ function stopAudio() {
 
 <style lang="css" scoped>
 .textcontainer {
-  margin-top: calc(var(--safe-area-inset-top, 0px) + 30px);
+  margin-top: calc(var(--sf-inset-top, 0px) + 30px);
   margin-bottom: 110px;
   margin-left: 10px;
   margin-right: 10px;
@@ -186,7 +186,7 @@ function stopAudio() {
 
 .playbutton {
   position: absolute;
-  top: calc(var(--safe-area-inset-top, 0px) + 30px);
+  top: calc(var(--sf-inset-top, 0px) + 30px);
   right: 30px;
   z-index: 51;
   width: 50px;
@@ -199,7 +199,7 @@ function stopAudio() {
 
 .stopbutton {
   position: absolute;
-  top: calc(var(--safe-area-inset-top, 0px) + 40px);
+  top: calc(var(--sf-inset-top, 0px) + 40px);
   right: 40px;
   z-index: 51;
   width: 40px;

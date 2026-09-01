@@ -137,7 +137,7 @@ function close() {
 
 .closeButton {
   position: absolute;
-  top: calc(var(--safe-area-inset-top, 0px) + 10px);
+  top: calc(var(--sf-inset-top, 0px) + 10px);
   right: 10px;
   --color: white;
   font-size: 2rem;

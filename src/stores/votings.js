@@ -69,14 +69,30 @@ export const useVotingsStore = defineStore("votings", {
         (v) => v.voting?.votingId === votingId
       );
 
+      // Show the choice immediately, but keep the previous value so a failed
+      // submit does not leave the user looking at a vote that never landed.
+      const previousVote = voting?.vote;
+
       if (voting) {
         voting.vote = voteObj;
       }
 
-      await fetch(await apiUrl(), {
-        method: "POST",
-        body: JSON.stringify(voteObj),
-      });
+      try {
+        const response = await fetch(await apiUrl(), {
+          method: "POST",
+          body: JSON.stringify(voteObj),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Vote failed: ${response.status}`);
+        }
+      } catch (e) {
+        if (voting) {
+          voting.vote = previousVote;
+        }
+        console.log(`SF addVote: ${e}`);
+        throw e;
+      }
     },
 
     async stopVoting(votingId) {

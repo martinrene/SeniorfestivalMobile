@@ -234,6 +234,6 @@ ion-icon {
 }
 
 ion-content::part(scroll) {
-  padding-top: var(--safe-area-inset-top, 0px);
+  padding-top: var(--sf-inset-top, 0px);
 }
 </style>
