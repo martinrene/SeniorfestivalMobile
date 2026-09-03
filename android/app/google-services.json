@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:688154094572:android:4dd9e87c558e1d34f8eec9",
+        "mobilesdk_app_id": "1:688154094572:android:4865d9c5c93718c0f8eec9",
         "android_client_info": {
-          "package_name": "dk.fdf.seniorfestival"
+          "package_name": "dk.fdf.seniorfestival.g2"
         }
       },
       "oauth_client": [

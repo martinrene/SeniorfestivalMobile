@@ -4,7 +4,7 @@ android {
     namespace = "dk.fdf.seniorfestival"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "dk.fdf.seniorfestival"
+        applicationId "dk.fdf.seniorfestival.g2"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 20261

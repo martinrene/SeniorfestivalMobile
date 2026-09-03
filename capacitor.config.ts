@@ -1,7 +1,7 @@
 import { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: "dk.fdf.seniorfestival",
+  appId: "dk.fdf.seniorfestival.g2",
   appName: "Seniorfestival",
   webDir: "dist",
 

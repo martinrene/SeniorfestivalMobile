@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">Seniorfestival</string>
     <string name="title_activity_main">Seniorfestival</string>
-    <string name="package_name">dk.fdf.seniorfestival</string>
-    <string name="custom_url_scheme">dk.fdf.seniorfestival</string>
+    <string name="package_name">dk.fdf.seniorfestival.g2</string>
+    <string name="custom_url_scheme">dk.fdf.seniorfestival.g2</string>
 </resources>
