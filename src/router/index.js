@@ -92,6 +92,12 @@ const routes = [
     name: "Rap",
     component: () => import("@/views/rapPage.vue"),
   },
+
+  {
+    path: "/game",
+    name: "Game",
+    component: () => import("@/views/gamePage.vue"),
+  },
 ];
 
 const router = createRouter({

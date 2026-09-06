@@ -177,6 +177,18 @@
           </ion-button>
         </li>
       </ul>
+
+      <ion-button
+        v-if="dataStore.settingBoolean('gameEnabled')"
+        fill="clear"
+        class="gameButton"
+        :class="{ visible: state.isMenuOpen }"
+        router-link="/game"
+        router-direction="root"
+        @click="closeMenu"
+      >
+        <span class="gameButtonIcon">🍟</span>
+      </ion-button>
     </div>
 
     <div class="wrap">
@@ -287,6 +299,105 @@ ion-button.heartButton {
   z-index: 50;
   color: white;
   font-size: 1rem;
+}
+
+/* Shortcut to the game. It lives in the menu overlay and appears with it, so it
+   is not in the way while you are reading a page. Fixed rather than absolute
+   because the overlay is only positioned while it is open, and offset by
+   --sf-inset-top since Android reports a 0 status bar inset -- see the comment
+   in theme/variables.css. */
+ion-button.gameButton {
+  position: fixed;
+  /* Roughly halfway between the top of the screen and the topmost menu item,
+     which .pop li:nth-child(8) puts at bottom: 459px. Measuring from the bottom
+     keeps that midpoint correct on both short and tall screens. */
+  bottom: calc(50vh + 230px);
+  right: 90px;
+  z-index: 50;
+  margin: 0;
+
+  /* No chrome, just the fries. */
+  --background: transparent;
+  --background-hover: transparent;
+  --background-activated: transparent;
+  --background-focused: transparent;
+  --box-shadow: none;
+  --ripple-color: transparent;
+  --padding-start: 4px;
+  --padding-end: 4px;
+  --padding-top: 4px;
+  --padding-bottom: 4px;
+  height: auto;
+
+  opacity: 0;
+  transform: scale(0.4);
+  pointer-events: none;
+  transition: opacity 0.25s linear,
+    transform 0.3s cubic-bezier(0.6, 0, 0.735, 0.045);
+}
+
+ion-button.gameButton.visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+ion-button.gameButton .gameButtonIcon {
+  /* inline-block because transforms do not apply to inline elements. */
+  display: inline-block;
+  font-size: 2.1rem;
+  line-height: 1;
+  filter: drop-shadow(0 6px 12px rgba(21, 18, 26, 0.35));
+}
+
+/* A wiggle every few seconds so the fries are noticed among the menu items.
+   Scoped to .visible so it only runs while the menu is actually open, and put
+   on the span so it does not fight the button's own show/hide transform. */
+ion-button.gameButton.visible .gameButtonIcon {
+  animation: friesShake 5s ease-in-out 1s infinite;
+}
+
+/* The shake occupies the first 16% of the cycle, which is the same 0.8s the
+   rest of the app shakes for, and the remainder is rest. */
+@keyframes friesShake {
+  0%,
+  16%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  1.6% {
+    transform: translate(-1px, -2px) rotate(-5deg);
+  }
+  3.2% {
+    transform: translate(-3px, 0) rotate(6deg);
+  }
+  4.8% {
+    transform: translate(3px, 2px) rotate(-2deg);
+  }
+  6.4% {
+    transform: translate(1px, -1px) rotate(7deg);
+  }
+  8% {
+    transform: translate(-1px, 2px) rotate(-6deg);
+  }
+  9.6% {
+    transform: translate(-3px, 1px) rotate(3deg);
+  }
+  11.2% {
+    transform: translate(3px, 1px) rotate(-5deg);
+  }
+  12.8% {
+    transform: translate(-1px, -1px) rotate(4deg);
+  }
+  14.4% {
+    transform: translate(1px, 2px) rotate(-2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ion-button.gameButton.visible .gameButtonIcon {
+    animation: none;
+  }
 }
 
 /* Bottom menu */
