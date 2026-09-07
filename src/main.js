@@ -90,7 +90,7 @@ async function oneSignalInit() {
     const alreadyGranted = await OneSignal.Notifications.hasPermission();
     const canPrompt = await OneSignal.Notifications.canRequestPermission();
     console.log(
-      `SF OneSignal: hasPermission=${alreadyGranted} canRequestPermission=${canPrompt}`
+      `SF OneSignal: hasPermission=${alreadyGranted} canRequestPermission=${canPrompt}`,
     );
 
     // fallbackToSettings: true so a user who previously denied is offered the
@@ -142,11 +142,12 @@ function handleNotificationEvent(evnt) {
       );
     } else if (additionalData.eventQueueNumber) {
       router.replace(`/queues`);
-      router.push(`/queues/${additionalData.eventQueueNumber}`);
     } else if (additionalData.notificationText) {
       router.replace("/home");
     } else if (additionalData.startRadio) {
       router.replace("/home?start=true");
+    } else if (additionalData.startGame) {
+      router.replace("/game");
     }
   }
 }
