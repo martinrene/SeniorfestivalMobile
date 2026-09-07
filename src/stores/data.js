@@ -1,11 +1,18 @@
 import { defineStore } from "pinia";
-import { useAppStore } from "@/stores/app";
+import { App } from "@capacitor/app";
+import { Capacitor } from "@capacitor/core";
 import { useMyEventsStore } from "@/stores/myEvents";
 import { Storage } from "@ionic/storage";
 
 const store = new Storage();
 const dataUrl = import.meta.env.VITE_DATA_API_URL;
 const storeKey = "SFdata";
+
+/**
+ * Cap on how long we wait for the native build number. A bridge call that never
+ * settles must not stall the data load behind it.
+ */
+const buildLookupTimeoutMs = 1500;
 
 export const useDataStore = defineStore("data", {
   state: () => ({
@@ -85,16 +92,42 @@ export const useDataStore = defineStore("data", {
  * left off rather than faked when there is none, which is the case on web.
  */
 async function dataApiUrl() {
-  const appStore = useAppStore();
-  const build = await appStore.fetchBuildNumber();
+  // This is diagnostics, so it must never be the reason the app fails to load
+  // its data: anything that goes wrong falls back to the plain URL.
+  try {
+    const params = new URLSearchParams({ platform: Capacitor.getPlatform() });
+    const build = await withTimeout(nativeBuildNumber());
 
-  const params = new URLSearchParams({ platform: appStore.platform });
+    if (build) {
+      params.set("build", build);
+    }
 
-  if (build) {
-    params.set("build", build);
+    return `${dataUrl}&${params}`;
+  } catch (e) {
+    console.log(`SF data url: ${e}`);
+    return dataUrl;
+  }
+}
+
+let buildNumberLookup;
+
+function nativeBuildNumber() {
+  if (Capacitor.getPlatform() === "web") {
+    return Promise.resolve(null);
   }
 
-  return `${dataUrl}&${params}`;
+  buildNumberLookup ||= App.getInfo()
+    .then((info) => info.build)
+    .catch(() => null);
+
+  return buildNumberLookup;
+}
+
+function withTimeout(promise) {
+  return Promise.race([
+    promise,
+    new Promise((resolve) => setTimeout(() => resolve(null), buildLookupTimeoutMs)),
+  ]);
 }
 
 function sortEventsOnStartTime(events) {

@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vue-tsc && vite build && npm run verify:bundle",
     "preview": "vite preview",
     "test:e2e": "cypress run",
     "test:unit": "vitest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "verify:bundle": "node scripts/check-bundle-cycles.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.2",

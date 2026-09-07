@@ -52,6 +52,12 @@
               de glade fjæs. Du har ét minut.
             </p>
             <p v-if="state.best > 0" class="best">Din rekord: {{ state.best }}</p>
+
+            <game-leaderboard
+              v-if="gameStore.leaderboard"
+              :leaderboard="gameStore.leaderboard"
+            />
+
             <ion-button expand="block" class="play" @click="startRound">
               Start
             </ion-button>
@@ -60,11 +66,50 @@
           <template v-else>
             <h1 class="score">{{ state.hits }}</h1>
             <p class="lead">træf på ét minut</p>
-            <p v-if="state.isNewBest" class="best">Ny rekord! 🎉</p>
-            <p v-else-if="state.best > 0" class="best">Din rekord: {{ state.best }}</p>
-            <ion-button expand="block" class="play" @click="startRound">
-              Spil igen
-            </ion-button>
+
+            <!-- Only a new record asks for a name. The board itself is shown
+                 either way, and before the round as well. -->
+            <template v-if="state.isNewBest && !state.scoreSaved">
+              <p class="best">Ny rekord! 🎉</p>
+              <p class="lead">Skriv dit navn, så kommer du på listen.</p>
+
+              <ion-input
+                v-model="state.nameDraft"
+                placeholder="Dit navn"
+                clear-input
+                class="nameInput"
+                @keyup.enter="saveScore"
+              ></ion-input>
+
+              <p v-if="gameStore.error" class="saveError">{{ gameStore.error }}</p>
+
+              <ion-button
+                expand="block"
+                class="play"
+                :disabled="!state.nameDraft.trim() || gameStore.isSaving"
+                @click="saveScore"
+              >
+                {{ gameStore.isSaving ? "Gemmer …" : "Gem resultat" }}
+              </ion-button>
+
+              <ion-button expand="block" fill="clear" class="skip" @click="startRound">
+                Spring over
+              </ion-button>
+            </template>
+
+            <template v-else>
+              <p v-if="state.isNewBest" class="best">Ny rekord! 🎉</p>
+              <p v-else-if="state.best > 0" class="best">Din rekord: {{ state.best }}</p>
+
+              <game-leaderboard
+                v-if="gameStore.leaderboard"
+                :leaderboard="gameStore.leaderboard"
+              />
+
+              <ion-button expand="block" class="play" @click="startRound">
+                Spil igen
+              </ion-button>
+            </template>
           </template>
         </div>
       </div>
@@ -76,6 +121,7 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import {
   IonButton,
+  IonInput,
   IonPage,
   onIonViewDidEnter,
   onIonViewWillLeave
@@ -85,6 +131,8 @@ import { Haptics, ImpactStyle } from "@capacitor/haptics";
 import { Storage } from "@ionic/storage";
 
 import { useAppStore } from "@/stores/app";
+import { useGameStore } from "@/stores/game";
+import gameLeaderboard from "@/components/gameLeaderboard.vue";
 import {
   ROUND_MS,
   createProjectile,
@@ -113,6 +161,7 @@ const store = new Storage();
 const storeKey = "SFgameBest";
 
 const appStore = useAppStore();
+const gameStore = useGameStore();
 
 const arena = ref(null);
 const items = ref([]);
@@ -127,7 +176,9 @@ const state = reactive({
   handEmoji: randomFood(),
   targetEmoji: randomTarget(),
   targetPop: false,
-  hasThrown: false
+  hasThrown: false,
+  nameDraft: "",
+  scoreSaved: false
 });
 
 const arenaSize = reactive({ width: 0, height: 0 });
@@ -173,6 +224,8 @@ onMounted(async () => {
   window.addEventListener("resize", measureArena);
   document.addEventListener("visibilitychange", onVisibilityChange);
   await loadBest();
+  state.nameDraft = await gameStore.loadName();
+  gameStore.fetchLeaderboard();
 });
 
 // Ionic keeps a page mounted after you navigate away, so onUnmounted is not a
@@ -181,6 +234,7 @@ onMounted(async () => {
 onIonViewDidEnter(() => {
   measureArena();
   state.phase = "idle";
+  gameStore.fetchLeaderboard();
 });
 
 onIonViewWillLeave(stopGame);
@@ -248,6 +302,8 @@ function startRound() {
   state.targetEmoji = randomTarget();
   state.targetPop = false;
   state.remainingMs = ROUND_MS;
+  state.scoreSaved = false;
+  gameStore.clearError();
 
   endsAt = Date.now() + ROUND_MS;
   targetPhase = 0;
@@ -260,6 +316,7 @@ async function finishRound() {
   stopLoop();
   state.phase = "finished";
   items.value = [];
+  gameStore.fetchLeaderboard();
 
   if (state.hits > state.best) {
     state.best = state.hits;
@@ -443,6 +500,15 @@ function launch(gestureVelocity, offsetX, offsetY) {
 
   state.handEmoji = randomFood(state.handEmoji);
   state.hasThrown = true;
+}
+
+async function saveScore() {
+  await gameStore.submitScore(state.hits, state.nameDraft);
+
+  // submitScore reports failure through gameStore.error and leaves the prompt up.
+  if (!gameStore.error) {
+    state.scoreSaved = true;
+  }
 }
 
 async function pulse() {
@@ -655,6 +721,29 @@ async function saveBest(hits) {
   margin: 0 0 18px;
   font-weight: 800;
   color: var(--sf-primary-color);
+}
+
+/* Name entry and leaderboard */
+
+.nameInput {
+  margin-bottom: 14px;
+  border: 1px solid var(--sf-border, #e4dfd8);
+  border-radius: 12px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  text-align: center;
+}
+
+.saveError {
+  margin: 0 0 12px;
+  font-weight: 700;
+  color: #c0392b;
+}
+
+ion-button.skip {
+  --color: var(--sf-muted-color);
+  text-transform: none;
+  margin-top: 2px;
 }
 
 ion-button.play {
