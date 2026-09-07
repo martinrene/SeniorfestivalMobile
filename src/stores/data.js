@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useAppStore } from "@/stores/app";
 import { useMyEventsStore } from "@/stores/myEvents";
 import { Storage } from "@ionic/storage";
 
@@ -16,7 +17,7 @@ export const useDataStore = defineStore("data", {
       await store.create();
       this.data = await store.get(storeKey);
 
-      const response = await fetch(dataUrl);
+      const response = await fetch(await dataApiUrl());
 
       if (!response.ok) {
         throw new Error("Fetch error: ${response.status}");
@@ -74,6 +75,27 @@ export const useDataStore = defineStore("data", {
     },
   },
 });
+
+/**
+ * Tags the call with the platform and build it came from. The API compares the
+ * build against currentIosVersion / currentAndroidVersion in Settings and swaps
+ * frontpageText for an update prompt when they differ, so it needs to know which
+ * of the two to check against. The configured URL already carries ?code=, so
+ * parameters are appended with & as the votings endpoint does it. The build is
+ * left off rather than faked when there is none, which is the case on web.
+ */
+async function dataApiUrl() {
+  const appStore = useAppStore();
+  const build = await appStore.fetchBuildNumber();
+
+  const params = new URLSearchParams({ platform: appStore.platform });
+
+  if (build) {
+    params.set("build", build);
+  }
+
+  return `${dataUrl}&${params}`;
+}
 
 function sortEventsOnStartTime(events) {
   const eventsWithStartTime = events.filter((e) => e.start && e.start !== "");

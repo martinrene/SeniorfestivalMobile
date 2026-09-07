@@ -1,9 +1,10 @@
 import { describe, expect, test } from "vitest";
 
 import {
-  BASKET_AMPLITUDE_RATIO,
-  BASKET_BASE_SPEED,
-  BASKET_SPRINT_SPEED,
+  TARGET_AMPLITUDE_RATIO,
+  TARGET_BASE_SPEED,
+  TARGET_RADIUS,
+  TARGET_SPRINT_SPEED,
   FAR_SCALE,
   GRAVITY,
   MAX_THROW_SPEED,
@@ -12,15 +13,14 @@ import {
   THROW_SPEED_SCALE,
   FOODS,
   TARGETS,
-  basketCentre,
-  basketSpeed,
+  hitsTarget,
   createProjectile,
-  crossedRimDescending,
-  isInsideRim,
   isValidThrow,
   projectileScale,
   randomFood,
   randomTarget,
+  targetCentre,
+  targetSpeed,
   stepProjectile,
   throwVelocity,
   toProjectileVelocity
@@ -131,42 +131,80 @@ describe("projectileScale", () => {
   });
 });
 
-describe("crossedRimDescending", () => {
-  const rim = 200;
+describe("hitsTarget", () => {
+  const face = { x: 200, y: 300 };
 
-  test("scores only on the way down", () => {
-    expect(crossedRimDescending({ vy: 500, prevY: 199, y: 201 }, rim)).toBe(true);
-    expect(crossedRimDescending({ vy: -500, prevY: 201, y: 199 }, rim)).toBe(false);
+  function path(fromX, fromY, toX, toY) {
+    return { prevX: fromX, prevY: fromY, x: toX, y: toY };
+  }
+
+  test("counts a hit on the way up, not just on the way down", () => {
+    // The whole point of the change: a flat, fast throw that strikes the face
+    // while still rising used to sail straight through without scoring.
+    expect(hitsTarget(path(200, 400, 200, 280), face.x, face.y)).toBe(true);
+    expect(hitsTarget(path(200, 200, 200, 320), face.x, face.y)).toBe(true);
   });
 
-  test("ignores frames that do not cross the line", () => {
-    expect(crossedRimDescending({ vy: 500, prevY: 150, y: 180 }, rim)).toBe(false);
-    expect(crossedRimDescending({ vy: 500, prevY: 260, y: 300 }, rim)).toBe(false);
+  test("counts a hit coming from either side", () => {
+    expect(hitsTarget(path(0, 300, 400, 300), face.x, face.y)).toBe(true);
+    expect(hitsTarget(path(400, 300, 0, 300), face.x, face.y)).toBe(true);
+  });
+
+  test("misses that go wide stay misses", () => {
+    expect(hitsTarget(path(0, 0, 0, 100), face.x, face.y)).toBe(false);
+    expect(
+      hitsTarget(path(200 + TARGET_RADIUS + 20, 0, 200 + TARGET_RADIUS + 20, 600), face.x, face.y)
+    ).toBe(false);
+  });
+
+  test("a very fast throw cannot tunnel straight through", () => {
+    // One frame that jumps from well below to well above the face still counts,
+    // because the path is tested rather than the end point.
+    expect(hitsTarget(path(200, 700, 200, -100), face.x, face.y)).toBe(true);
+  });
+
+  test("respects the radius exactly", () => {
+    const justInside = 200 + TARGET_RADIUS - 1;
+    const justOutside = 200 + TARGET_RADIUS + 1;
+
+    expect(hitsTarget(path(justInside, 300, justInside, 300), face.x, face.y)).toBe(true);
+    expect(hitsTarget(path(justOutside, 300, justOutside, 300), face.x, face.y)).toBe(false);
   });
 });
 
-describe("isInsideRim", () => {
-  test("catches within half a rim either side of the basket", () => {
-    expect(isInsideRim(200, 200, 50)).toBe(true);
-    expect(isInsideRim(249, 200, 50)).toBe(true);
-    expect(isInsideRim(251, 200, 50)).toBe(false);
-    expect(isInsideRim(149, 200, 50)).toBe(false);
-  });
-});
-
-describe("basket movement", () => {
+describe("face movement", () => {
   test("speeds up for the closing sprint", () => {
-    expect(basketSpeed(SPRINT_MS + 1)).toBe(BASKET_BASE_SPEED);
-    expect(basketSpeed(SPRINT_MS)).toBe(BASKET_SPRINT_SPEED);
-    expect(basketSpeed(0)).toBe(BASKET_SPRINT_SPEED);
+    expect(targetSpeed(SPRINT_MS + 1)).toBe(TARGET_BASE_SPEED);
+    expect(targetSpeed(SPRINT_MS)).toBe(TARGET_SPRINT_SPEED);
+    expect(targetSpeed(0)).toBe(TARGET_SPRINT_SPEED);
+  });
+
+  test("never crawls to a near-standstill", () => {
+    // A sine decelerates to zero at both ends of its sweep and lingers there,
+    // handing the player a stationary target twice a cycle. Measure how often
+    // the face is barely moving; for a plain sine this would be about 16%.
+    const width = 380;
+    const step = 0.002;
+    const speeds = [];
+
+    for (let phase = 0; phase < 40; phase += step) {
+      speeds.push(
+        Math.abs(targetCentre(width, phase + step) - targetCentre(width, phase)) / step
+      );
+    }
+
+    const mean = speeds.reduce((a, b) => a + b, 0) / speeds.length;
+    const crawling = speeds.filter((speed) => speed < mean * 0.25).length / speeds.length;
+
+    expect(crawling).toBeLessThan(0.05);
   });
 
   test("never sweeps outside the arena", () => {
     const width = 380;
-    const limit = width * BASKET_AMPLITUDE_RATIO;
+    const limit = width * TARGET_AMPLITUDE_RATIO;
 
     for (let phase = 0; phase < 20; phase += 0.1) {
-      const x = basketCentre(width, phase);
+      const x = targetCentre(width, phase);
       expect(x).toBeGreaterThanOrEqual(width / 2 - limit - 0.001);
       expect(x).toBeLessThanOrEqual(width / 2 + limit + 0.001);
     }

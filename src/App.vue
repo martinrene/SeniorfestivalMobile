@@ -311,8 +311,11 @@ ion-button.gameButton {
   /* Roughly halfway between the top of the screen and the topmost menu item,
      which .pop li:nth-child(8) puts at bottom: 459px. Measuring from the bottom
      keeps that midpoint correct on both short and tall screens. */
-  bottom: calc(50vh + 230px);
-  right: 90px;
+  /* Nudged in by half the emoji's growth when it was doubled in size, so the
+     fries stay visually centred where they were rather than drifting up and
+     left off this anchor. */
+  bottom: calc(50vh + 215px);
+  right: 75px;
   z-index: 50;
   margin: 0;
 
@@ -345,9 +348,9 @@ ion-button.gameButton.visible {
 ion-button.gameButton .gameButtonIcon {
   /* inline-block because transforms do not apply to inline elements. */
   display: inline-block;
-  font-size: 2.1rem;
+  font-size: 4.2rem;
   line-height: 1;
-  filter: drop-shadow(0 6px 12px rgba(21, 18, 26, 0.35));
+  filter: drop-shadow(0 8px 16px rgba(21, 18, 26, 0.4));
 }
 
 /* A wiggle every few seconds so the fries are noticed among the menu items.

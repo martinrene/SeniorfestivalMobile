@@ -33,15 +33,27 @@ export const MAX_THROW_SPEED = 3200;
 /** How small an item gets by the time it reaches the basket line. */
 export const FAR_SCALE = 0.42;
 
-/** Half the catchable width of the basket mouth, in play-area pixels. */
-export const RIM_HALF_WIDTH = 52;
+/**
+ * How close the food has to get to the face to count, in play-area pixels. The
+ * face glyph is about 52px across, so this is roughly its own size plus a small
+ * forgiveness margin -- turn it down further to demand tighter aim.
+ */
+export const TARGET_RADIUS = 38;
 
-/** Basket sweep, as a fraction of the play area width. */
-export const BASKET_AMPLITUDE_RATIO = 0.3;
+/**
+ * Face sweep either side of centre, as a fraction of the play area width. At
+ * 0.42 the face reaches 8% and 92% of the width, so it tucks right up to both
+ * edges. Much beyond this and it leaves the screen at the turns.
+ */
+export const TARGET_AMPLITUDE_RATIO = 0.42;
 
-/** Basket sweep speed in radians/second, before and during the final sprint. */
-export const BASKET_BASE_SPEED = 1.05;
-export const BASKET_SPRINT_SPEED = 1.9;
+/**
+ * Face sweep speed in radians/second, before and during the final sprint. One
+ * full there-and-back is 2*PI radians, so 2.5 is a round trip every 2.5s and 3.8
+ * every 1.7s. Below about 1.5 the face is slow enough to hit without leading it.
+ */
+export const TARGET_BASE_SPEED = 2.5;
+export const TARGET_SPRINT_SPEED = 3.8;
 
 /** How long the closing sprint lasts. */
 export const SPRINT_MS = 20000;
@@ -117,6 +129,7 @@ export function createProjectile({ id, x, y, vx, vy, emoji }) {
     emoji,
     x,
     y,
+    prevX: x,
     prevY: y,
     vx,
     vy,
@@ -130,6 +143,7 @@ export function createProjectile({ id, x, y, vx, vy, emoji }) {
 
 /** Advances one projectile by dt seconds. Mutates and returns it. */
 export function stepProjectile(projectile, dt) {
+  projectile.prevX = projectile.x;
   projectile.prevY = projectile.y;
   projectile.vy += GRAVITY * dt;
   projectile.x += projectile.vx * dt;
@@ -153,26 +167,57 @@ export function projectileScale(y, handY, basketY) {
 }
 
 /**
- * True on the frame an item drops through the basket line. Descending only, so
- * an item still on its way up cannot score on the way past.
+ * True when the food touched the face on this frame, from any direction. Tested
+ * against the whole path travelled since the last frame rather than just where
+ * the item ended up, so a fast throw cannot skip clean through between frames.
  */
-export function crossedRimDescending(projectile, rimY) {
-  return projectile.vy > 0 && projectile.prevY < rimY && projectile.y >= rimY;
+export function hitsTarget(projectile, targetX, targetY, radius = TARGET_RADIUS) {
+  const distance = segmentDistance(
+    projectile.prevX, projectile.prevY,
+    projectile.x, projectile.y,
+    targetX, targetY
+  );
+
+  return distance <= radius;
 }
 
-export function isInsideRim(x, basketX, halfWidth = RIM_HALF_WIDTH) {
-  return Math.abs(x - basketX) <= halfWidth;
+/** Shortest distance from a point to the line segment a -> b. */
+function segmentDistance(ax, ay, bx, by, px, py) {
+  const dx = bx - ax;
+  const dy = by - ay;
+  const lengthSquared = dx * dx + dy * dy;
+
+  if (lengthSquared === 0) {
+    return Math.hypot(px - ax, py - ay);
+  }
+
+  const along = ((px - ax) * dx + (py - ay) * dy) / lengthSquared;
+  const clamped = Math.min(1, Math.max(0, along));
+
+  return Math.hypot(px - (ax + clamped * dx), py - (ay + clamped * dy));
 }
 
-/** Basket speeds up for the closing seconds, so the round builds. */
-export function basketSpeed(remainingMs) {
-  return remainingMs <= SPRINT_MS ? BASKET_SPRINT_SPEED : BASKET_BASE_SPEED;
+/** The face speeds up for the closing seconds, so the round builds. */
+export function targetSpeed(remainingMs) {
+  return remainingMs <= SPRINT_MS ? TARGET_SPRINT_SPEED : TARGET_BASE_SPEED;
 }
 
-/** Horizontal centre of the basket at a given point in the round. */
-export function basketCentre(width, phase) {
-  const amplitude = width * BASKET_AMPLITUDE_RATIO;
-  return width / 2 + Math.sin(phase) * amplitude;
+/** Horizontal centre of the face at a given point in the round. */
+export function targetCentre(width, phase) {
+  const amplitude = width * TARGET_AMPLITUDE_RATIO;
+
+  // A triangle wave, not a sine. A sine decelerates to a standstill at each end
+  // of its sweep and lingers there, which parks the face and makes it trivial to
+  // hit; a triangle crosses at a constant speed and turns sharply instead.
+  const sweep = (2 / Math.PI) * Math.asin(Math.sin(phase));
+
+  // A second wave on top so the path is not a metronome you can fire on without
+  // looking. Its peak speed (0.2 * 1.7 = 0.34) stays below the triangle's
+  // constant 0.8 * 2/PI = 0.51, so the two can never cancel into a stall.
+  const wobble = Math.sin(phase * 1.7);
+
+  // The weights sum to 1, which keeps the sweep inside the arena.
+  return width / 2 + (sweep * 0.8 + wobble * 0.2) * amplitude;
 }
 
 /** Never picks the value already on screen, so a swap always looks like a swap. */

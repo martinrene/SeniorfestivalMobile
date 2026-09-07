@@ -20,7 +20,7 @@
         @pointerup="onPointerUp"
         @pointercancel="onPointerUp"
       >
-        <div class="basket" :class="{ pop: state.targetPop }" :style="basketStyle">
+        <div class="target" :class="{ pop: state.targetPop }" :style="targetStyle">
           {{ state.targetEmoji }}
         </div>
 
@@ -87,15 +87,14 @@ import { Storage } from "@ionic/storage";
 import { useAppStore } from "@/stores/app";
 import {
   ROUND_MS,
-  basketCentre,
-  basketSpeed,
   createProjectile,
-  crossedRimDescending,
-  isInsideRim,
+  hitsTarget,
   isValidThrow,
   projectileScale,
   randomFood,
   randomTarget,
+  targetCentre,
+  targetSpeed,
   stepProjectile,
   throwVelocity,
   toProjectileVelocity
@@ -117,7 +116,7 @@ const appStore = useAppStore();
 
 const arena = ref(null);
 const items = ref([]);
-const basketX = ref(0);
+const targetX = ref(0);
 
 const state = reactive({
   phase: "idle", // idle | playing | finished
@@ -139,7 +138,7 @@ const drag = reactive({ dx: 0, dy: 0 });
 let frameId = null;
 let lastFrameAt = 0;
 let endsAt = 0;
-let basketPhase = 0;
+let targetPhase = 0;
 let nextItemId = 1;
 let activePointerId = null;
 let samples = [];
@@ -149,12 +148,12 @@ let targetPopUntil = 0;
 
 const secondsLeft = computed(() => Math.ceil(state.remainingMs / 1000));
 
-/** The hand sits above the bottom nav; the basket rides in the upper quarter. */
+/** The hand sits above the bottom nav; the face rides in the upper quarter. */
 const handY = computed(() => Math.max(120, arenaSize.height - 96));
-const rimY = computed(() => Math.max(90, arenaSize.height * 0.26));
+const targetY = computed(() => Math.max(90, arenaSize.height * 0.26));
 
-const basketStyle = computed(() => ({
-  transform: `translate3d(${basketX.value}px, ${rimY.value}px, 0)`
+const targetStyle = computed(() => ({
+  transform: `translate3d(${targetX.value}px, ${targetY.value}px, 0)`
 }));
 
 const handStyle = computed(() => ({
@@ -233,7 +232,7 @@ function measureArena() {
   arenaSize.height = rect.height;
 
   if (state.phase !== "playing") {
-    basketX.value = arenaSize.width / 2;
+    targetX.value = arenaSize.width / 2;
   }
 }
 
@@ -251,7 +250,7 @@ function startRound() {
   state.remainingMs = ROUND_MS;
 
   endsAt = Date.now() + ROUND_MS;
-  basketPhase = 0;
+  targetPhase = 0;
   pausedRemainingMs = null;
 
   startLoop();
@@ -314,8 +313,8 @@ function loop(now) {
 
   state.remainingMs = Math.max(0, endsAt - Date.now());
 
-  basketPhase += basketSpeed(state.remainingMs) * dt;
-  basketX.value = basketCentre(arenaSize.width, basketPhase);
+  targetPhase += targetSpeed(state.remainingMs) * dt;
+  targetX.value = targetCentre(arenaSize.width, targetPhase);
 
   advanceItems(dt, now);
   state.targetPop = now < targetPopUntil;
@@ -326,7 +325,7 @@ function loop(now) {
 }
 
 function advanceItems(dt, now) {
-  const rim = rimY.value;
+  const targetCentreY = targetY.value;
   const remaining = [];
 
   for (const item of items.value) {
@@ -338,9 +337,9 @@ function advanceItems(dt, now) {
     }
 
     stepProjectile(item, dt);
-    item.scale = projectileScale(item.y, handY.value, rim);
+    item.scale = projectileScale(item.y, handY.value, targetCentreY);
 
-    if (crossedRimDescending(item, rim) && isInsideRim(item.x, basketX.value)) {
+    if (hitsTarget(item, targetX.value, targetCentreY)) {
       item.hit = true;
       item.settled = true;
       item.removeAt = now + SCORE_POP_MS;
@@ -535,7 +534,7 @@ async function saveBest(hits) {
   overflow: hidden;
 }
 
-.basket,
+.target,
 .food {
   position: absolute;
   left: 0;
@@ -551,7 +550,7 @@ async function saveBest(hits) {
   pointer-events: none;
 }
 
-.basket {
+.target {
   font-size: 3.6rem;
   filter: drop-shadow(0 6px 10px rgba(21, 18, 26, 0.18));
 }
@@ -565,7 +564,7 @@ async function saveBest(hits) {
   filter: drop-shadow(0 8px 12px rgba(21, 18, 26, 0.2));
 }
 
-.basket.pop {
+.target.pop {
   animation: fed 0.26s ease-out;
 }
 
